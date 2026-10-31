@@ -1,0 +1,657 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080b14">
+<meta name="description" content="Ghazi JEE Tracker — chapter-wise syllabus, DPPs, modules, tests and PYQs.">
+<title>Ghazi JEE | Premium Study Tracker</title>
+<link rel="icon" href="https://i.postimg.cc/m2PRngnY/logo512-png.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme:dark;
+  --bg:#080b14;--panel:#101624;--panel2:#141c2c;
+  --line:#253149;--text:#edf3ff;--muted:#8c9ab3;
+  --blue:#66a6ff;--cyan:#58e0ed;--pink:#fa72b5;
+  --green:#5be0a0;--yellow:#ffd477;--radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+a{color:inherit;text-decoration:none}
+button:disabled{opacity:.45;cursor:not-allowed}
+::selection{background:#456fbd;color:white}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.bg-glow:before,.bg-glow:after{content:"";position:absolute;width:430px;height:430px;border-radius:50%;filter:blur(120px);opacity:.12}
+.bg-glow:before{background:#287dff;top:-200px;left:-100px}
+.bg-glow:after{background:#e94b9a;right:-160px;top:40%}
+.app{width:min(1450px,94%);margin:auto;padding-bottom:70px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:23px 0;border-bottom:1px solid #ffffff12}
+.logo{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:-.5px}
+.logo img{width:43px;height:43px;object-fit:contain;border-radius:13px}
+.logo small{display:block;color:var(--muted);font-weight:500;letter-spacing:0;font-size:11px;margin-top:4px}
+.top-actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);border-radius:12px;padding:11px 15px;background:var(--panel2);color:var(--text);font-weight:650;transition:.2s}
+.btn:hover{border-color:var(--blue);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(120deg,#3678ed,#6b8bff);border-color:transparent;color:white}
+.btn.subtle{background:transparent}
+.btn.danger{color:#ff9aab}
+.hero{padding:42px 0 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid #5be0a033;border-radius:30px;background:#5be0a00d;color:var(--green);font-size:11px;font-weight:750;letter-spacing:1px;text-transform:uppercase}
+.eyebrow i{width:7px;height:7px;background:var(--green);border-radius:50%}
+h1{font-size:clamp(32px,5vw,56px);letter-spacing:-2px;line-height:1.08;margin:18px 0 12px}
+.gradient{background:linear-gradient(100deg,#fff,#7ab7ff 55%,#bba3ff);background-clip:text;color:transparent}
+.subtitle{color:var(--muted);line-height:1.8;max-width:720px;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0 34px}
+.stat{padding:20px;border:1px solid var(--line);border-radius:18px;background:#101624cc}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-value{font-size:27px;font-weight:800;letter-spacing:-1px;margin:9px 0 4px}
+.stat-foot{font-size:11px;color:var(--muted)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:28px 0 18px}
+.section-head h2{font-size:21px;letter-spacing:-.6px;margin:0 0 7px}
+.section-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.7}
+.search-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.search{flex:1;min-width:190px}
+.field{width:100%;background:#0c1220;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:13px 14px}
+.field::placeholder{color:#71809b}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:24px}
+.chip{border:1px solid var(--line);background:#101624;color:var(--muted);border-radius:30px;padding:9px 13px;font-size:12px;font-weight:650}
+.chip.active{color:white;border-color:#568df5;background:#568df51a}
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+.subject-card{border:1px solid var(--line);background:linear-gradient(155deg,#121a2a,#0d1320);border-radius:var(--radius);padding:22px;margin-bottom:18px;min-width:0}
+.subject-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}
+.subject-title{display:flex;align-items:center;gap:11px}
+.subject-icon{width:44px;height:44px;display:grid;place-items:center;background:#66a6ff14;border:1px solid #66a6ff24;border-radius:14px;font-size:21px}
+.subject-title h3{margin:0 0 5px;font-size:17px}
+.subject-title p{margin:0;color:var(--muted);font-size:11px}
+.ring{width:59px;height:59px;position:relative;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6}
+.ring .track{stroke:#273248}
+.ring .value{stroke:var(--cyan);stroke-linecap:round;transition:stroke-dashoffset .4s}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-size:11px;font-weight:800}
+.chapter-list{display:grid;gap:7px}
+.chapter-row{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid transparent;border-radius:12px;background:#ffffff04;transition:.2s;min-width:0}
+.chapter-row:hover{border-color:#66a6ff44;background:#66a6ff0b}
+.chapter-open{display:flex;align-items:center;gap:9px;flex:1;min-width:0;text-align:left;border:0;background:transparent;color:var(--text);padding:0}
+.chapter-name{font-size:12px;font-weight:600;line-height:1.5;overflow-wrap:anywhere}
+.chapter-meta{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.arrow{color:#71809b;font-size:18px}
+.check{width:27px;height:27px;flex:none;border:1px solid #35435b;background:#0b111d;color:transparent;border-radius:8px}
+.check.done{background:var(--green);border-color:var(--green);color:#07150e}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:13px}
+.panel{border:1px solid var(--line);border-radius:var(--radius);background:#101624;padding:22px;margin:24px 0}
+.hidden{display:none!important}
+.backline{display:flex;align-items:center;gap:12px;margin:28px 0 20px}
+.backline button{flex:none}
+.breadcrumb{font-size:12px;color:var(--muted)}
+.chapter-hero{padding:26px;border:1px solid #38517a;border-radius:24px;background:linear-gradient(125deg,#182743,#111b2d 65%,#19172b);margin-bottom:22px}
+.chapter-hero h1{font-size:clamp(27px,4vw,43px);margin:12px 0}
+.chapter-hero p{color:#aebbd1;font-size:13px;line-height:1.8;margin:0}
+.tag{display:inline-block;padding:6px 9px;background:#ffffff0c;border:1px solid #ffffff15;border-radius:8px;color:#c5d7f5;font-size:10px;font-weight:750;margin-right:5px}
+.resource-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:20px 0}
+.resource-card{padding:16px 12px;text-align:left;border:1px solid var(--line);border-radius:16px;background:#111827;color:var(--text);min-width:0;transition:.2s}
+.resource-card:hover,.resource-card.active{border-color:var(--blue);background:#66a6ff10}
+.resource-card .emoji{font-size:22px;display:block;margin-bottom:12px}
+.resource-card strong{display:block;font-size:12px;margin-bottom:5px}
+.resource-card small{color:var(--muted);font-size:10px;line-height:1.5}
+.content-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:25px 0 15px}
+.content-toolbar h2{font-size:20px;margin:0}
+.resource-list{display:grid;gap:10px}
+.resource-item{display:flex;align-items:center;gap:14px;padding:16px;border:1px solid var(--line);border-radius:15px;background:#101624}
+.resource-item .resource-symbol{font-size:22px;width:43px;height:43px;display:grid;place-items:center;background:#ffffff08;border-radius:12px;flex:none}
+.resource-item .resource-info{flex:1;min-width:0}
+.resource-info strong{display:block;font-size:13px;overflow-wrap:anywhere}
+.resource-info small{display:block;color:var(--muted);font-size:11px;line-height:1.7;margin-top:5px}
+.resource-actions{display:flex;gap:7px;flex-wrap:wrap}
+.empty-state{padding:32px 18px;text-align:center;border:1px dashed #35435b;border-radius:17px;color:var(--muted)}
+.empty-state .big{font-size:32px;margin-bottom:12px}
+.empty-state strong{display:block;color:var(--text);margin-bottom:8px}
+.empty-state p{font-size:12px;line-height:1.8;margin:0 auto 14px;max-width:440px}
+.question{padding:22px;border:1px solid var(--line);border-radius:18px;background:#111827;margin-bottom:14px}
+.question-top{display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:11px;margin-bottom:14px}
+.question-text{font-size:15px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.options{display:grid;gap:9px;margin:18px 0}
+.option{display:flex;align-items:flex-start;gap:10px;text-align:left;width:100%;padding:12px;border:1px solid var(--line);background:#0c1220;color:var(--text);border-radius:12px;font-size:13px;line-height:1.6}
+.option.selected{border-color:var(--blue);background:#66a6ff12}
+.option.correct{border-color:var(--green);background:#5be0a010}
+.option.wrong{border-color:#ff7485;background:#ff748510}
+.option-key{width:25px;height:25px;display:grid;place-items:center;flex:none;border:1px solid #384760;border-radius:8px;font-size:11px}
+.solution{border-top:1px solid var(--line);margin-top:16px;padding-top:15px;font-size:13px;line-height:1.8;color:#c2cee1;white-space:pre-wrap}
+.solution strong{color:var(--green)}
+.footer{padding:28px 0;border-top:1px solid #ffffff12;color:var(--muted);font-size:11px;line-height:1.8;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-top:35px}
+.modal-backdrop{position:fixed;inset:0;z-index:20;background:#03050ae8;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-backdrop.show{display:flex}
+.modal{width:min(720px,100%);max-height:90vh;overflow:auto;background:#111827;border:1px solid #35435b;border-radius:22px;padding:23px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+.modal-head h2{font-size:19px;margin:0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.form-field{display:grid;gap:7px;margin-bottom:13px}
+.form-field label{font-size:11px;color:#aab7cc;font-weight:700}
+.form-field.full{grid-column:1/-1}
+.form-field textarea{min-height:100px;resize:vertical}
+.notice{padding:12px 14px;border:1px solid #ffd47733;background:#ffd47709;border-radius:12px;color:#d8cba9;font-size:11px;line-height:1.8;margin:12px 0}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#182438;border:1px solid #3a5479;color:white;padding:12px 18px;border-radius:12px;font-size:12px;z-index:50;transition:.25s;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.main-grid{grid-template-columns:1fr}.resource-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:580px){
+ .app{width:92%}.topbar{align-items:flex-start}.logo{font-size:13px}.logo img{width:37px;height:37px}
+ .top-actions .btn{padding:9px;font-size:11px}.hero{padding-top:30px}h1{letter-spacing:-1.2px}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.stat{padding:15px}.stat-value{font-size:23px}
+ .subject-card{padding:15px}.chapter-row{padding:9px}.resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .resource-card{padding:13px 10px}.resource-item{align-items:flex-start;flex-wrap:wrap}.resource-actions{width:100%;padding-left:56px}
+ .form-grid{grid-template-columns:1fr}.form-field.full{grid-column:auto}.panel{padding:15px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="app">
+<header class="topbar">
+  <a href="./" class="logo" id="homeLink">
+    <img src="https://i.postimg.cc/m2PRngnY/logo512-png.png" alt="Ghazi logo">
+    <span>GHAZI JEE<small>PERSONAL STUDY COMMAND CENTER</small></span>
+  </a>
+  <div class="top-actions">
+    <button class="btn subtle" id="exportBtn">Export JSON</button>
+    <button class="btn" id="importBtn">Import JSON</button>
+    <button class="btn primary" id="adminBtn">＋ Add material</button>
+    <input id="importFile" type="file" accept=".json,application/json" hidden>
+  </div>
+</header>
+
+<main id="homeView">
+  <section class="hero">
+    <span class="eyebrow"><i></i> YOUR JEE PREPARATION HUB</span>
+    <h1>Study smarter.<br><span class="gradient">Track every chapter.</span></h1>
+    <p class="subtitle">Your syllabus, practice material, tests and previous year questions — organised chapter by chapter. Open any chapter to access the material you have added.</p>
+  </section>
+
+  <section class="stats" aria-label="Study statistics">
+    <div class="stat"><div class="stat-label">Total chapters</div><div class="stat-value" id="totalCh">0</div><div class="stat-foot">Class 11 + Class 12</div></div>
+    <div class="stat"><div class="stat-label">Completed</div><div class="stat-value" id="doneCh">0</div><div class="stat-foot">Your marked chapters</div></div>
+    <div class="stat"><div class="stat-label">Syllabus progress</div><div class="stat-value" id="overallPct">0%</div><div class="stat-foot">Based on completion marks</div></div>
+    <div class="stat"><div class="stat-label">Added resources</div><div class="stat-value" id="totalResources">0</div><div class="stat-foot">Across all chapters</div></div>
+  </section>
+
+  <section class="panel">
+    <div class="section-head" style="margin-top:0">
+      <div><h2>Exam countdown</h2><p>Countdown dates are configurable in the JavaScript section.</p></div>
+    </div>
+    <div class="stats" id="countdowns" style="margin-bottom:0"></div>
+  </section>
+
+  <section id="syllabus">
+    <div class="section-head">
+      <div><h2>Your syllabus</h2><p>Choose a chapter to open its dedicated study room.</p></div>
+    </div>
+    <div class="search-row">
+      <div class="search"><input id="searchInput" class="field" type="search" placeholder="Search chapters, subjects..." aria-label="Search chapters"></div>
+      <select class="field" id="classFilter" style="width:auto;min-width:130px" aria-label="Filter class">
+        <option value="all">All classes</option><option value="11th">Class 11th</option><option value="12th">Class 12th</option>
+      </select>
+    </div>
+    <div class="filters" id="subjectFilters">
+      <button class="chip active" data-subject="all">All subjects</button>
+      <button class="chip" data-subject="Physics">Physics</button>
+      <button class="chip" data-subject="Chemistry">Chemistry</button>
+      <button class="chip" data-subject="Maths">Maths</button>
+      <button class="chip" data-subject="Biology">Biology</button>
+    </div>
+    <div class="main-grid">
+      <section><div class="section-head"><div><h2>Class 11th</h2><p>Build your fundamentals</p></div></div><div id="class11"></div></section>
+      <section><div class="section-head"><div><h2>Class 12th</h2><p>Master advanced topics</p></div></div><div id="class12"></div></section>
+    </div>
+  </section>
+</main>
+
+<main id="chapterView" class="hidden">
+  <div class="backline">
+    <button class="btn" id="backBtn">← Syllabus</button>
+    <div class="breadcrumb" id="breadcrumb">Syllabus / Chapter</div>
+  </div>
+  <section class="chapter-hero">
+    <span class="tag" id="chapterClass">CLASS 11</span>
+    <span class="tag" id="chapterSubject">CHEMISTRY</span>
+    <h1 id="chapterTitle">Chapter</h1>
+    <p id="chapterDesc">Your chapter study room.</p>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:20px">
+      <button class="btn primary" id="markChapterBtn">Mark completed ✓</button>
+      <button class="btn" id="chapterJsonBtn">Export chapter JSON</button>
+    </div>
+  </section>
+  <section class="resource-grid" id="resourceTabs"></section>
+  <section class="panel" style="margin-top:0">
+    <div class="content-toolbar">
+      <div><h2 id="resourceHeading">DPPs</h2><p class="subtitle" style="font-size:12px;margin:6px 0 0">Only resources added for this chapter appear here.</p></div>
+      <button class="btn primary" id="addResourceBtn">＋ Add to this chapter</button>
+    </div>
+    <div id="resourceContent"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <span>© <span id="year"></span> Ghazi JEE · Personal study workspace</span>
+  <span>Progress is saved in this browser. Back up your data regularly.</span>
+</footer>
+</div>
+
+<div class="modal-backdrop" id="adminModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modal-head"><h2 id="modalTitle">Add study material</h2><button class="btn" id="closeModal">✕ Close</button></div>
+    <div class="notice">This static GitHub Pages version saves changes in this browser. To make added material available to every visitor, export the JSON and commit the updated chapter JSON file to GitHub. This is not a secure admin login.</div>
+    <div class="form-field"><label for="chapterSelect">Chapter</label><select class="field" id="chapterSelect"></select></div>
+    <div class="form-grid">
+      <div class="form-field"><label for="resourceType">Material type</label><select class="field" id="resourceType"><option value="dpp">DPP</option><option value="module">Module</option><option value="test">Test</option><option value="pyq">PYQ</option><option value="session">Session</option></select></div>
+      <div class="form-field"><label for="resourceTitle">Title</label><input class="field" id="resourceTitle" placeholder="e.g. DPP 01"></div>
+      <div class="form-field full"><label for="resourceDescription">Description (optional)</label><textarea class="field" id="resourceDescription" placeholder="Topics, instructions or source details"></textarea></div>
+      <div class="form-field full"><label for="resourceUrl">PDF / file URL (optional)</label><input class="field" id="resourceUrl" type="url" placeholder="https://..."></div>
+      <div class="form-field full"><label for="resourceJson">Questions JSON (optional)</label><textarea class="field" id="resourceJson" placeholder='Paste a questions array or a resource JSON object'></textarea></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap">
+      <button class="btn" id="cancelAdd">Cancel</button><button class="btn primary" id="saveResource">Save material</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+/* ==========================================================
+   GHAZI JEE TRACKER
+   Static website: no backend and no fake question bank.
+   Add real question data through JSON files or the local UI.
+========================================================== */
+
+const DB = [
+ {cls:"11th",sub:"Maths",ch:["Basic Math","Sets","Trignometric functions","Trignometric Equation","Quadratic Equations","Sequence and series","Relations and functions","Permutations and combination","Binomial theorem","Limit and Derivatives","Linear inequalities","Straight Lines","Circles","Parabola","Ellipse","Hyperbola","Probability (XI)","Introduction To 3D","Complex Numbers","Statistics","Solution of Triangle"]},
+ {cls:"11th",sub:"Physics",ch:["Unit and Dimension","Basic Maths","Vectors","Motion in a Straight Line","Errors anf measurement","Motion in a plane","Laws of motion","Circular Motion","Work power energy","Centre of mass","Thermal properties of matter","Mechanical properties of solids","Rotational motion","Ktg and thermodynamics","Oscillations","Waves","Mechanical properties of fluids","Gravitation"]},
+ {cls:"11th",sub:"Chemistry",ch:["Mole concept","Structure of atom","State of matter","Thermodynamics","Redox reaction","Chemical equilibrium","Ionic equilibrium","IUPAC Naming","Isomerism","GOC","Hydrocarbons","Purification","Environmental chemistry","Periodic table","Chemical bonding","P-Block","S-Block","Hydrogen"]},
+ {cls:"11th",sub:"Biology",ch:["Cell - the unit of life","Cell cycle and cell devision","The living world","Biological classification","Plant kingdom","Morphlogy","Anatomy","Photosynsthesis","Respiration","Plant growth","Structural organization","Breathing","Body fluids","Excretory product","Locomotion","Neural control","Chemical coordination","Animal kingdom","Biomolecules"]},
+ {cls:"12th",sub:"Maths",ch:["Determinants","Matrices","Relations and functions","Inverse trignometric function","LCD","Method of differentiation","Application of derivatives","Indefinite integration","Definite integration","Application of intergrals","Differential equation","Vector algebra","Three dimensional geometry","Probability"]},
+ {cls:"12th",sub:"Physics",ch:["Electric charges and fields","Electrostatic potential","Current electricity","Moving charges","Magnetism and matter","Electromagnetic induction","Alternating current","EM Waves","Ray optics","Wave optics","Dual nature","Atoms","Nuclei","Semiconductors"]},
+ {cls:"12th",sub:"Chemistry",ch:["Solution","Electrochemistry","Chemical kinetics","Surface chemistry","Optical isomerism","Hydrocarbon (12th)","Haloalkanes","Alcohols","Aldehydes","Amines","Biomolecules (Chem)","Polymers","Everyday Life","Environmental Chem (12)","Coordination compounds","P-Block (12)","D and F block","Qualitative analysis","Isolation of metals"]},
+ {cls:"12th",sub:"Biology",ch:["Sexual reproduction","Principles of inheritance","Molecular basis","Microbes","Tissue culture","Organisms","Ecosystem","Biodiversity","Human reproduction","Reproductive health","Human health","Biotech principles","Biotech applications","Evolution"]}
+];
+
+const TYPES = [
+ {id:"dpp",label:"DPPs",icon:"✍️",description:"Daily practice sheets"},
+ {id:"module",label:"Modules",icon:"📚",description:"Coaching module sets"},
+ {id:"test",label:"Tests",icon:"⏱️",description:"Chapter practice tests"},
+ {id:"pyq",label:"PYQs",icon:"🎯",description:"Previous year questions"},
+ {id:"session",label:"Sessions",icon:"🗂️",description:"Notes and session material"}
+];
+const SUBJECT_ICONS={Physics:"⚡",Chemistry:"🧪",Maths:"📐",Biology:"🧬"};
+const STORAGE_KEY="ghaziJeeTracker.v3";
+const TYPES_KEY="ghaziJeeResources.v3";
+const COMPLETED_KEY="ghaziJeeCompleted.v3";
+const slugify=s=>String(s).toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"").trim();
+const escapeHTML=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const allChapters=DB.flatMap(group=>group.ch.map(name=>({
+ cls:group.cls,sub:group.sub,name,slug:slugify(name),id:slugify(group.cls+"-"+group.sub+"-"+name)
+})));
+const chapterBySlug=new Map();
+allChapters.forEach(ch=>{
+ if(!chapterBySlug.has(ch.slug))chapterBySlug.set(ch.slug,ch);
+});
+const readStore=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
+let resources=readStore(TYPES_KEY,{});
+let completed=readStore(COMPLETED_KEY,{});
+let activeSubject="all";
+let activeChapter=null;
+let activeType="dpp";
+let currentQuestions=[];
+let answers={};
+let toastTimer=null;
+
+function getChapter(slug){return chapterBySlug.get(slug)||allChapters.find(ch=>ch.id===slug)||null}
+function getResources(chapter){return Array.isArray(resources[chapter.id])?resources[chapter.id]:[]}
+function saveResources(){localStorage.setItem(TYPES_KEY,JSON.stringify(resources))}
+function saveCompleted(){localStorage.setItem(COMPLETED_KEY,JSON.stringify(completed))}
+function isDone(ch){return !!completed[ch.id]}
+function chapterUrl(ch){return getBasePath()+encodeURIComponent(ch.slug)+"/"}
+function getBasePath(){
+ const path=location.pathname;
+ const segments=path.split("/").filter(Boolean);
+ const last=(segments[segments.length-1]||"").replace(/\.html$/,"");
+ if(chapterBySlug.has(last)||allChapters.some(ch=>ch.id===last)){
+   return "/"+segments.slice(0,-1).join("/")+(segments.length>1?"/":"");
+ }
+ if(path.endsWith("/index.html"))return path.slice(0,-10);
+ if(path.endsWith("/"))return path;
+ return path.slice(0,path.lastIndexOf("/")+1)||"/";
+}
+function toast(message){
+ const el=document.getElementById("toast");el.textContent=message;el.classList.add("show");
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),2600);
+}
+function safeJSONParse(value){
+ try{return JSON.parse(value)}catch{return null}
+}
+function totalResources(){return Object.values(resources).reduce((n,list)=>n+(Array.isArray(list)?list.length:0),0)}
+function renderStats(){
+ const done=allChapters.filter(isDone).length;
+ document.getElementById("totalCh").textContent=allChapters.length;
+ document.getElementById("doneCh").textContent=done;
+ document.getElementById("overallPct").textContent=Math.round(done/allChapters.length*100)+"%";
+ document.getElementById("totalResources").textContent=totalResources();
+}
+function ring(percent){
+ const circumference=2*Math.PI*25;
+ return `<div class="ring" aria-label="${percent}% complete"><svg viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="25"/><circle class="value" cx="30" cy="30" r="25" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference*(1-percent/100)}"/></svg><span>${percent}%</span></div>`;
+}
+function renderSyllabus(){
+ const query=document.getElementById("searchInput").value.trim().toLowerCase();
+ const clsFilter=document.getElementById("classFilter").value;
+ const containers={"11th":document.getElementById("class11"),"12th":document.getElementById("class12")};
+ Object.values(containers).forEach(el=>el.innerHTML="");
+ DB.forEach(group=>{
+  if(clsFilter!=="all"&&clsFilter!==group.cls)return;
+  if(activeSubject!=="all"&&activeSubject!==group.sub)return;
+  const chapters=group.ch.map(name=>getChapter(slugify(name))).filter(ch=>ch&&
+    (ch.name+" "+ch.sub+" "+ch.cls).toLowerCase().includes(query));
+  if(!chapters.length)return;
+  const done=chapters.filter(isDone).length;
+  const card=document.createElement("article");card.className="subject-card";
+  card.innerHTML=`<div class="subject-head"><div class="subject-title"><div class="subject-icon">${SUBJECT_ICONS[group.sub]||"📘"}</div><div><h3>${escapeHTML(group.sub)}</h3><p>${group.cls} · ${done}/${chapters.length} completed</p></div></div>${ring(Math.round(done/chapters.length*100))}</div><div class="chapter-list">${chapters.map(ch=>{
+   const count=getResources(ch).length;
+   return `<div class="chapter-row"><button class="chapter-open" data-open="${escapeHTML(ch.slug)}"><span style="font-size:17px">${isDone(ch)?"✓":"›"}</span><span style="min-width:0"><span class="chapter-name">${escapeHTML(ch.name)}</span><span class="chapter-meta">${count} resource${count===1?"":"s"} · ${escapeHTML(ch.cls)}</span></span></button><button class="check ${isDone(ch)?"done":""}" data-check="${escapeHTML(ch.id)}" aria-label="Mark ${escapeHTML(ch.name)} completed">${isDone(ch)?"✓":""}</button></div>`;
+  }).join("")}</div>`;
+  containers[group.cls].appendChild(card);
+ });
+ Object.entries(containers).forEach(([cls,el])=>{
+  if(!el.children.length)el.innerHTML='<div class="empty">No matching chapters.</div>';
+ });
+ renderStats();
+}
+function renderCountdowns(){
+ const exams=[
+  {name:"JEE Main 2027",date:"2027-01-24T09:00:00"},
+  {name:"JEE Main April 2027",date:"2027-04-06T09:00:00"},
+  {name:"JEE Advanced 2027",date:"2027-05-23T09:00:00"},
+  {name:"NEET 2027",date:"2027-05-02T09:00:00"}
+ ];
+ const root=document.getElementById("countdowns");
+ root.innerHTML=exams.map((e,i)=>`<div class="stat"><div class="stat-label">${escapeHTML(e.name)}</div><div class="stat-value" id="exam${i}">—</div><div class="stat-foot" id="examFoot${i}"></div></div>`).join("");
+ function tick(){
+  exams.forEach((e,i)=>{
+   const diff=new Date(e.date).getTime()-Date.now();
+   const val=document.getElementById("exam"+i),foot=document.getElementById("examFoot"+i);
+   if(diff<=0){val.textContent="Date passed";foot.textContent="Update date in index.html";return}
+   const days=Math.floor(diff/86400000),hours=Math.floor(diff%86400000/3600000);
+   val.textContent=days.toLocaleString()+"d";
+   foot.textContent=hours+" hours remaining today";
+  });
+ }
+ tick();setInterval(tick,60000);
+}
+function setSubject(subject){
+ activeSubject=subject;
+ document.querySelectorAll("[data-subject]").forEach(btn=>btn.classList.toggle("active",btn.dataset.subject===subject));
+ renderSyllabus();
+}
+function showHome(){
+ activeChapter=null;
+ document.getElementById("homeView").classList.remove("hidden");
+ document.getElementById("chapterView").classList.add("hidden");
+ document.title="Ghazi JEE | Premium Study Tracker";
+ renderSyllabus();
+}
+function navigateToChapter(ch,push=true){
+ if(!ch)return showHome();
+ activeChapter=ch;activeType="dpp";
+ if(push)history.pushState({chapter:ch.slug},"",chapterUrl(ch));
+ document.getElementById("homeView").classList.add("hidden");
+ document.getElementById("chapterView").classList.remove("hidden");
+ document.getElementById("chapterTitle").textContent=ch.name;
+ document.getElementById("chapterClass").textContent="CLASS "+ch.cls;
+ document.getElementById("chapterSubject").textContent=ch.sub.toUpperCase();
+ document.getElementById("chapterDesc").textContent=`${ch.sub} · ${ch.cls} · Your dedicated space for DPPs, modules, tests, PYQs and sessions.`;
+ document.getElementById("breadcrumb").textContent=`Syllabus / ${ch.cls} / ${ch.sub} / ${ch.name}`;
+ document.getElementById("markChapterBtn").textContent=isDone(ch)?"✓ Completed — mark incomplete":"Mark completed ✓";
+ document.getElementById("chapterSelect").value=ch.id;
+ document.title=ch.name+" | Ghazi JEE";
+ renderResourceTabs();renderResourceContent();
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderResourceTabs(){
+ const root=document.getElementById("resourceTabs");
+ root.innerHTML=TYPES.map(t=>{
+  const count=getResources(activeChapter).filter(r=>r.type===t.id).length;
+  return `<button class="resource-card ${activeType===t.id?"active":""}" data-type="${t.id}"><span class="emoji">${t.icon}</span><strong>${t.label}</strong><small>${count} item${count===1?"":"s"} · ${t.description}</small></button>`;
+ }).join("");
+ document.getElementById("resourceHeading").textContent=TYPES.find(t=>t.id===activeType).label;
+}
+function renderResourceContent(){
+ if(!activeChapter)return;
+ const root=document.getElementById("resourceContent");
+ const list=getResources(activeChapter).filter(r=>r.type===activeType);
+ if(!list.length){
+  const label=TYPES.find(t=>t.id===activeType).label;
+  root.innerHTML=`<div class="empty-state"><div class="big">${TYPES.find(t=>t.id===activeType).icon}</div><strong>No ${label} added yet</strong><p>There is no material for this category in this chapter yet. Add material with the button above, or import the chapter JSON after preparing your PDFs.</p><button class="btn primary" id="emptyAdd">＋ Add ${label}</button></div>`;
+  document.getElementById("emptyAdd").addEventListener("click",()=>openAdmin(activeChapter,activeType));
+  return;
+ }
+ root.innerHTML='<div class="resource-list">'+list.map((r)=>{
+  const t=TYPES.find(x=>x.id===r.type);
+  const count=Array.isArray(r.questions)?r.questions.length:0;
+  return `<article class="resource-item"><div class="resource-symbol">${t.icon}</div><div class="resource-info"><strong>${escapeHTML(r.title)}</strong><small>${escapeHTML(r.description||t.description)}${count?" · "+count+" questions":""}</small></div><div class="resource-actions">${count?`<button class="btn primary" data-practice="${escapeHTML(r.id)}">Practice</button>`:""}${r.url?`<a class="btn" href="${escapeHTML(r.url)}" target="_blank" rel="noopener noreferrer">Open file ↗</a>`:""}<button class="btn" data-export-resource="${escapeHTML(r.id)}">JSON</button></div></article>`;
+ }).join("")+'</div>';
+}
+function openAdmin(ch=activeChapter,type=activeType){
+ document.getElementById("chapterSelect").value=ch?.id||allChapters[0].id;
+ document.getElementById("resourceType").value=type||"dpp";
+ document.getElementById("resourceTitle").value="";
+ document.getElementById("resourceDescription").value="";
+ document.getElementById("resourceUrl").value="";
+ document.getElementById("resourceJson").value="";
+ document.getElementById("adminModal").classList.add("show");
+}
+function closeAdmin(){document.getElementById("adminModal").classList.remove("show")}
+function normaliseResource(raw,chapter){
+ const type=String(raw.type||"dpp").toLowerCase();
+ if(!TYPES.some(t=>t.id===type))throw new Error("Unknown resource type: "+type);
+ const title=String(raw.title||"").trim();
+ if(!title)throw new Error("Every resource needs a title.");
+ let url=String(raw.url||"").trim();
+ if(url){const parsed=new URL(url,location.href);if(!["https:","http:"].includes(parsed.protocol))throw new Error("Only HTTP/HTTPS resource URLs are supported.");url=parsed.href}
+ let questions=raw.questions;
+ if(questions!==undefined&&!Array.isArray(questions))throw new Error("questions must be an array.");
+ return {id:String(raw.id||"res-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,7)),chapterId:chapter.id,type,title,description:String(raw.description||""),url,questions:Array.isArray(questions)?questions:[],source:raw.source||null};
+}
+function saveNewResource(){
+ try{
+  const chapter=allChapters.find(ch=>ch.id===document.getElementById("chapterSelect").value);
+  if(!chapter)throw new Error("Please select a chapter.");
+  let raw={type:document.getElementById("resourceType").value,title:document.getElementById("resourceTitle").value,description:document.getElementById("resourceDescription").value,url:document.getElementById("resourceUrl").value};
+  const rawQuestions=document.getElementById("resourceJson").value.trim();
+  if(rawQuestions){
+   const parsed=safeJSONParse(rawQuestions);
+   if(!parsed)throw new Error("Questions JSON is invalid.");
+   if(Array.isArray(parsed))raw.questions=parsed;
+   else{raw={...raw,...parsed,type:parsed.type||raw.type,title:parsed.title||raw.title};}
+  }
+  const resource=normaliseResource(raw,chapter);
+  resources[chapter.id]=getResources(chapter).concat(resource);
+  saveResources();closeAdmin();renderSyllabus();
+  if(activeChapter?.id===chapter.id){activeType=resource.type;renderResourceTabs();renderResourceContent()}
+  toast("Material saved in this browser. Export JSON to publish it.");
+ }catch(e){toast(e.message||"Could not save material.")}
+}
+function downloadJSON(data,filename){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");
+ a.href=url;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function exportAll(){
+ downloadJSON({schemaVersion:1,app:"Ghazi JEE Tracker",resources,completed,exportedAt:new Date().toISOString()},"ghazi-jee-backup.json");
+}
+function exportChapter(){
+ if(!activeChapter)return;
+ downloadJSON({schemaVersion:1,chapterId:activeChapter.id,chapterName:activeChapter.name,slug:activeChapter.slug,subject:activeChapter.sub,class:activeChapter.cls,resources:getResources(activeChapter)} ,activeChapter.slug+".json");
+}
+function importJSONFile(file){
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const data=JSON.parse(String(reader.result));
+   if(data.resources&&typeof data.resources==="object"&&!Array.isArray(data.resources)){
+    for(const [chapterId,list] of Object.entries(data.resources)){
+     if(!allChapters.some(ch=>ch.id===chapterId)||!Array.isArray(list))continue;
+     resources[chapterId]=list.map(r=>normaliseResource(r,allChapters.find(ch=>ch.id===chapterId)));
+    }
+    if(data.completed&&typeof data.completed==="object")completed={...completed,...data.completed};
+   }else{
+    const chapter=allChapters.find(ch=>ch.id===data.chapterId)||getChapter(data.slug);
+    if(!chapter)throw new Error("Chapter not found in JSON. Include a valid chapterId or slug.");
+    const list=Array.isArray(data.resources)?data.resources:[data];
+    resources[chapter.id]=getResources(chapter).concat(list.map(r=>normaliseResource(r,chapter)));
+    activeChapter=chapter;
+   }
+   saveResources();saveCompleted();renderSyllabus();
+   if(activeChapter){navigateToChapter(activeChapter,false)}
+   toast("JSON imported. Check the chapter and export a backup.");
+  }catch(e){toast("Import failed: "+(e.message||"Invalid JSON"))}
+ };
+ reader.readAsText(file);
+}
+function startPractice(resource){
+ if(!activeChapter)return;
+ currentQuestions=Array.isArray(resource.questions)?resource.questions:[];
+ answers={};
+ if(!currentQuestions.length){toast("This resource has no questions yet.");return}
+ const root=document.getElementById("resourceContent");
+ root.innerHTML=`<div class="content-toolbar"><div><h2>${escapeHTML(resource.title)}</h2><p class="subtitle">Select your answers, then submit to see the score and provided solutions.</p></div><button class="btn" id="exitPractice">← Back</button></div><div id="questionList"></div><div style="display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap"><button class="btn" id="resetPractice">Reset</button><button class="btn primary" id="submitPractice">Submit answers</button></div><div id="scoreArea"></div>`;
+ document.getElementById("exitPractice").addEventListener("click",renderResourceContent);
+ document.getElementById("resetPractice").addEventListener("click",()=>startPractice(resource));
+ document.getElementById("submitPractice").addEventListener("click",submitPractice);
+ document.getElementById("questionList").innerHTML=currentQuestions.map((q,i)=>{
+  const options=q.options&&typeof q.options==="object"?q.options:{};
+  return `<article class="question" data-question="${i}"><div class="question-top"><span>QUESTION ${i+1}</span><span>${escapeHTML(q.marks??"")} ${q.marks?"marks":""}</span></div><div class="question-text">${escapeHTML(q.question||q.text||"Question text missing")}</div><div class="options">${Object.entries(options).map(([key,value])=>`<button class="option" data-q="${i}" data-answer="${escapeHTML(key)}"><span class="option-key">${escapeHTML(key)}</span><span>${escapeHTML(value)}</span></button>`).join("")}</div><div class="solution hidden" id="solution${i}"></div></article>`;
+ }).join("");
+}
+function submitPractice(){
+ let score=0,marked=0;
+ currentQuestions.forEach((q,i)=>{
+  const correct=String(q.correctAnswer??q.answer??"").trim();
+  const chosen=answers[i];
+  const hasAnswer=correct!=="";
+  if(chosen!==undefined)marked++;
+  if(hasAnswer&&chosen!==undefined&&String(chosen)===correct)score++;
+  const card=document.querySelector(`[data-question="${i}"]`);
+  card.querySelectorAll(".option").forEach(btn=>{
+   btn.disabled=true;
+   if(hasAnswer&&btn.dataset.answer===correct)btn.classList.add("correct");
+   else if(btn.dataset.answer===chosen)btn.classList.add("wrong");
+  });
+  const solution=document.getElementById("solution"+i);
+  const explanation=String(q.solution||q.explanation||"No solution has been supplied for this question.");
+  solution.innerHTML=`<strong>${hasAnswer?"Correct answer: "+escapeHTML(correct):"Answer not provided in JSON"}</strong><br>${escapeHTML(explanation)}`;
+  solution.classList.remove("hidden");
+ });
+ const available=currentQuestions.filter(q=>String(q.correctAnswer??q.answer??"").trim()!=="").length;
+ document.getElementById("scoreArea").innerHTML=`<div class="panel"><h2>Practice result</h2><p style="color:var(--muted);line-height:1.8">Correct: <strong>${score}/${available}</strong> answer-key questions · Attempted: ${marked}/${currentQuestions.length}. Questions without an answer key are not included in the score.</p></div>`;
+}
+function populateChapterSelect(){
+ const select=document.getElementById("chapterSelect");
+ select.innerHTML=allChapters.map(ch=>`<option value="${escapeHTML(ch.id)}">${escapeHTML(ch.cls+" · "+ch.sub+" · "+ch.name)}</option>`).join("");
+}
+function initRoute(){
+ const querySlug=new URLSearchParams(location.search).get("chapter");
+ const segments=location.pathname.split("/").filter(Boolean);
+ const last=(segments[segments.length-1]||"").replace(/\.html$/,"");
+ const slug=querySlug||last;
+ const chapter=getChapter(slug);
+ if(chapter)navigateToChapter(chapter,false);else showHome();
+}
+document.getElementById("classFilter").addEventListener("change",renderSyllabus);
+document.getElementById("searchInput").addEventListener("input",renderSyllabus);
+document.getElementById("subjectFilters").addEventListener("click",e=>{
+ const btn=e.target.closest("[data-subject]");if(btn)setSubject(btn.dataset.subject);
+});
+document.getElementById("syllabus").addEventListener("click",e=>{
+ const open=e.target.closest("[data-open]");
+ const check=e.target.closest("[data-check]");
+ if(open){const ch=getChapter(open.dataset.open);if(ch)navigateToChapter(ch,true)}
+ if(check){
+  const ch=allChapters.find(x=>x.id===check.dataset.check);if(!ch)return;
+  completed[ch.id]=!completed[ch.id];saveCompleted();renderSyllabus();
+ }
+});
+document.getElementById("resourceTabs").addEventListener("click",e=>{
+ const btn=e.target.closest("[data-type]");if(!btn)return;
+ activeType=btn.dataset.type;renderResourceTabs();renderResourceContent();
+});
+document.getElementById("resourceContent").addEventListener("click",e=>{
+ const practice=e.target.closest("[data-practice]");
+ const exportBtn=e.target.closest("[data-export-resource]");
+ if(practice){
+  const r=getResources(activeChapter).find(x=>x.id===practice.dataset.practice);
+  if(r)startPractice(r);
+ }
+ if(exportBtn){
+  const r=getResources(activeChapter).find(x=>x.id===exportBtn.dataset.exportResource);
+  if(r)downloadJSON({schemaVersion:1,chapterId:activeChapter.id,chapterName:activeChapter.name,slug:activeChapter.slug,resources:[r]},activeChapter.slug+"-"+r.type+".json");
+ }
+});
+document.getElementById("backBtn").addEventListener("click",()=>{
+ history.pushState({home:true},"",getBasePath());showHome();
+});
+document.getElementById("homeLink").addEventListener("click",e=>{
+ if(location.origin===e.currentTarget.origin){e.preventDefault();history.pushState({home:true},"",getBasePath());showHome()}
+});
+document.getElementById("markChapterBtn").addEventListener("click",()=>{
+ if(!activeChapter)return;
+ completed[activeChapter.id]=!completed[activeChapter.id];saveCompleted();
+ document.getElementById("markChapterBtn").textContent=isDone(activeChapter)?"✓ Completed — mark incomplete":"Mark completed ✓";
+ renderSyllabus();toast(isDone(activeChapter)?"Chapter marked completed":"Completion mark removed");
+});
+document.getElementById("chapterJsonBtn").addEventListener("click",exportChapter);
+document.getElementById("adminBtn").addEventListener("click",()=>openAdmin());
+document.getElementById("addResourceBtn").addEventListener("click",()=>openAdmin());
+document.getElementById("closeModal").addEventListener("click",closeAdmin);
+document.getElementById("cancelAdd").addEventListener("click",closeAdmin);
+document.getElementById("saveResource").addEventListener("click",saveNewResource);
+document.getElementById("exportBtn").addEventListener("click",exportAll);
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importFile").click());
+document.getElementById("importFile").addEventListener("change",e=>{
+ const file=e.target.files?.[0];if(file)importJSONFile(file);e.target.value="";
+});
+document.getElementById("adminModal").addEventListener("click",e=>{
+ if(e.target.id==="adminModal")closeAdmin();
+});
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeAdmin();
+});
+document.addEventListener("click",e=>{
+ const btn=e.target.closest("[data-q]");
+ if(!btn||btn.disabled)return;
+ const index=Number(btn.dataset.q);
+ answers[index]=btn.dataset.answer;
+ document.querySelectorAll(`[data-q="${index}"]`).forEach(b=>b.classList.toggle("selected",b===btn));
+});
+window.addEventListener("popstate",initRoute);
+
+document.getElementById("year").textContent=new Date().getFullYear();
+populateChapterSelect();
+renderCountdowns();
+renderStats();
+initRoute();
+
+/* ==========================================================
+   JSON RESOURCE FORMAT
+   Keep one file per chapter in data/chapters/.
+   Example path: data/chapters/moleconcept.json
+========================================================== */
+</script>
+</body>
+</html>
