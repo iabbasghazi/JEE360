@@ -2,2364 +2,770 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090914">
-<meta name="description" content="Your personal JEE and NEET preparation tracker.">
-<title>JEE-NEET | Ultimate Study Tracker</title>
-<link rel="icon" href="https://i.postimg.cc/m2PRngnY/logo512-png.png">
-<style>
-:root {
-  color-scheme: dark;
-  --bg: #090914;
-  --panel: rgba(19, 20, 40, .84);
-  --panel2: #15152a;
-  --text: #f5f5ff;
-  --muted: #9294b6;
-  --line: rgba(175, 170, 255, .14);
-  --pink: #f472d0;
-  --purple: #a78bfa;
-  --blue: #60a5fa;
-  --cyan: #67e8f9;
-  --green: #4ade80;
-  --orange: #fbbf24;
-  --danger: #fb7185;
-  --radius: 20px;
-}
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 15% 0%, rgba(119, 60, 200, .17), transparent 35%),
-    radial-gradient(ellipse at 90% 20%, rgba(32, 120, 210, .12), transparent 35%),
-    var(--bg);
-  color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 14px;
-  line-height: 1.55;
-}
-button, input, select, textarea { font: inherit; }
-button { cursor: pointer; }
-button:focus-visible, a:focus-visible, input:focus-visible,
-select:focus-visible, textarea:focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 3px;
-}
-a { color: inherit; text-decoration: none; }
-#snow {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-.app {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 250px minmax(0, 1fr);
-  min-height: 100vh;
-}
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  padding: 22px 15px;
-  background: rgba(10, 10, 25, .88);
-  border-right: 1px solid var(--line);
-  backdrop-filter: blur(24px);
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 4px 7px 18px;
-  border-bottom: 1px solid var(--line);
-}
-.brand img {
-  width: 43px;
-  height: 43px;
-  border-radius: 13px;
-  object-fit: cover;
-}
-.brand-name { font-size: 16px; font-weight: 850; letter-spacing: -.5px; }
-.brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 1.7px; }
-.nav-label {
-  padding: 0 10px;
-  margin-bottom: 8px;
-  color: #777995;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-}
-.nav-list { display: grid; gap: 5px; }
-.nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 11px 12px;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  color: #b9bad4;
-  background: transparent;
-  text-align: left;
-  transition: .2s ease;
-}
-.nav-btn:hover { background: rgba(167,139,250,.08); color: white; }
-.nav-btn.active {
-  color: white;
-  border-color: rgba(167,139,250,.25);
-  background: linear-gradient(100deg, rgba(167,139,250,.18), rgba(244,114,208,.07));
-  box-shadow: inset 3px 0 var(--purple);
-}
-.nav-icon { width: 20px; text-align: center; font-size: 17px; }
-.nav-count {
-  margin-left: auto;
-  color: var(--muted);
-  font-size: 11px;
-}
-.sidebar-bottom { margin-top: auto; }
-.exam-mini {
-  padding: 15px;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: linear-gradient(145deg, rgba(167,139,250,.12), rgba(96,165,250,.04));
-}
-.exam-mini-title { font-size: 12px; font-weight: 750; }
-.exam-mini-desc { color: var(--muted); font-size: 11px; margin-top: 4px; }
-.main { min-width: 0; padding: 24px clamp(16px, 3vw, 38px) 50px; }
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 27px;
-}
-.eyebrow {
-  color: var(--pink);
-  font-size: 10px;
-  font-weight: 850;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-.page-title { margin: 4px 0 0; font-size: clamp(23px, 3vw, 31px); letter-spacing: -1.1px; }
-.top-actions { display: flex; align-items: center; gap: 9px; }
-.icon-btn, .btn {
-  border: 1px solid var(--line);
-  color: var(--text);
-  background: rgba(25,25,48,.78);
-  border-radius: 12px;
-  min-height: 39px;
-  padding: 9px 13px;
-  transition: transform .2s, border-color .2s, background .2s;
-}
-.icon-btn:hover, .btn:hover { border-color: rgba(167,139,250,.6); transform: translateY(-1px); }
-.btn-primary {
-  color: #10101d;
-  font-weight: 800;
-  border: none;
-  background: linear-gradient(110deg, var(--pink), var(--purple), var(--blue));
-}
-.btn-danger { color: #fecdd3; border-color: rgba(251,113,133,.3); }
-.grid { display: grid; gap: 17px; }
-.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.card {
-  min-width: 0;
-  padding: 19px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: linear-gradient(145deg, rgba(24,24,48,.88), rgba(15,15,31,.83));
-  box-shadow: 0 15px 40px rgba(0,0,0,.12);
-  backdrop-filter: blur(14px);
-}
-.stat-card { position: relative; overflow: hidden; }
-.stat-card::after {
-  content: "";
-  position: absolute;
-  width: 95px;
-  height: 95px;
-  right: -35px;
-  top: -35px;
-  border-radius: 50%;
-  background: var(--glow, rgba(167,139,250,.12));
-  filter: blur(4px);
-}
-.stat-label { color: var(--muted); font-size: 12px; }
-.stat-value { margin-top: 9px; font-size: clamp(24px, 2.6vw, 34px); font-weight: 850; letter-spacing: -1px; }
-.stat-foot { color: var(--muted); font-size: 11px; margin-top: 6px; }
-.stat-symbol { float: right; font-size: 20px; }
-.two-col { grid-template-columns: minmax(0, 1.35fr) minmax(280px, .85fr); }
-.section-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 17px;
-}
-.section-title { margin: 0; font-size: 16px; font-weight: 800; letter-spacing: -.3px; }
-.section-desc { margin-top: 3px; color: var(--muted); font-size: 12px; }
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid var(--line);
-  border-radius: 100px;
-  padding: 5px 10px;
-  color: #c9c8e7;
-  background: rgba(167,139,250,.08);
-  font-size: 11px;
-}
-.exam-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
-.exam-tab {
-  padding: 8px 13px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  color: var(--muted);
-  background: transparent;
-}
-.exam-tab.active {
-  color: white;
-  border-color: rgba(244,114,208,.4);
-  background: rgba(244,114,208,.1);
-}
-.progress-track {
-  height: 7px;
-  overflow: hidden;
-  border-radius: 20px;
-  background: rgba(255,255,255,.07);
-}
-.progress-fill {
-  width: 0;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--pink), var(--purple), var(--cyan));
-  transition: width .5s ease;
-}
-.subject-row { display: grid; gap: 9px; margin: 19px 0; }
-.subject-top { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
-.subject-name { font-weight: 700; }
-.subject-percent { color: var(--muted); }
-.chapter-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-.field {
-  min-width: 0;
-  width: 100%;
-  padding: 11px 12px;
-  color: var(--text);
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  background: rgba(8,8,20,.7);
-}
-.field::placeholder { color: #777995; }
-.chapter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.chapter-card {
-  display: grid;
-  gap: 12px;
-  cursor: pointer;
-  transition: transform .2s, border-color .2s;
-}
-.chapter-card:hover { transform: translateY(-3px); border-color: rgba(167,139,250,.45); }
-.chapter-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
-.chapter-title { font-weight: 800; font-size: 14px; }
-.chapter-meta { color: var(--muted); font-size: 11px; margin-top: 4px; }
-.chapter-status { color: var(--cyan); font-size: 10px; }
-.chapter-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-.resource-list { display: grid; gap: 9px; }
-.resource-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: rgba(255,255,255,.018);
-}
-.resource-icon {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  flex: 0 0 auto;
-  border-radius: 11px;
-  background: rgba(167,139,250,.12);
-}
-.resource-info { min-width: 0; flex: 1; }
-.resource-title { font-weight: 750; overflow-wrap: anywhere; }
-.resource-sub { color: var(--muted); font-size: 11px; margin-top: 3px; }
-.resource-empty, .empty-state {
-  padding: 28px 15px;
-  color: var(--muted);
-  border: 1px dashed rgba(175,170,255,.2);
-  border-radius: 15px;
-  text-align: center;
-}
-.view { display: none; animation: enter .25s ease; }
-.view.active { display: block; }
-@keyframes enter {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding: clamp(22px, 4vw, 38px);
-  margin-bottom: 18px;
-  border: 1px solid rgba(167,139,250,.22);
-  border-radius: 24px;
-  background:
-    radial-gradient(ellipse at 90% 10%, rgba(96,165,250,.19), transparent 38%),
-    linear-gradient(120deg, rgba(111,60,155,.2), rgba(25,27,56,.85));
-}
-.hero h2 { margin: 10px 0; max-width: 680px; font-size: clamp(24px, 4vw, 38px); line-height: 1.2; letter-spacing: -1px; }
-.hero p { max-width: 650px; color: #b5b6d1; }
-.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 19px; }
-.timer-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.timer-number { font-size: 25px; font-weight: 850; }
-.timer-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
-.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
-.form-field { display: grid; gap: 6px; }
-.form-field label { color: #b8b8d3; font-size: 12px; }
-.form-field.full { grid-column: 1 / -1; }
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: none;
-  place-items: center;
-  padding: 18px;
-  background: rgba(2,2,12,.76);
-  backdrop-filter: blur(10px);
-}
-.modal-backdrop.open { display: grid; }
-.modal {
-  width: min(560px, 100%);
-  max-height: 88vh;
-  overflow-y: auto;
-  padding: 23px;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background: #111126;
-  box-shadow: 0 25px 100px rgba(0,0,0,.5);
-}
-.modal-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 18px; }
-.modal-head h3 { margin: 0; font-size: 18px; }
-.modal-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.toast {
-  position: fixed;
-  z-index: 200;
-  right: 20px;
-  bottom: 20px;
-  max-width: min(380px, calc(100vw - 40px));
-  padding: 13px 17px;
-  color: white;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-  background: #20203a;
-  box-shadow: 0 15px 40px #0006;
-  opacity: 0;
-  transform: translateY(12px);
-  pointer-events: none;
-  transition: .2s;
-}
-.toast.show { opacity: 1; transform: translateY(0); }
-.mobile-menu { display: none; }
-.muted { color: var(--muted); }
-.small { font-size: 11px; }
-.spacer { height: 18px; }
-@media (max-width: 1100px) {
-  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .two-col { grid-template-columns: 1fr; }
-}
-@media (max-width: 760px) {
-  .app { display: block; }
-  .sidebar {
-    position: fixed;
-    z-index: 50;
-    left: 0;
-    top: 0;
-    width: 260px;
-    transform: translateX(-105%);
-    transition: transform .25s ease;
-    box-shadow: 20px 0 60px #0005;
-  }
-  .sidebar.open { transform: translateX(0); }
-  .main { padding: 18px 13px 35px; }
-  .mobile-menu { display: inline-flex; }
-  .topbar { align-items: flex-start; }
-  .top-actions .desktop-only { display: none; }
-  .chapter-grid { grid-template-columns: 1fr; }
-  .hero { padding: 22px 18px; }
-  .form-grid { grid-template-columns: 1fr; }
-  .form-field.full { grid-column: auto; }
-  .card { padding: 16px; }
-}
-@media (max-width: 390px) {
-  .stats-grid { grid-template-columns: 1fr 1fr; gap: 9px; }
-  .stat-card { padding: 13px; }
-  .stat-value { font-size: 23px; }
-  .top-actions { gap: 5px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: .01ms !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="A focused JEE and NEET learning academy.">
+  <title>Academy — JEE & NEET</title>
+  <link rel="icon" href="https://i.postimg.cc/m2PRngnY/logo512-png.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #000;
+      --panel: #0b0b0f;
+      --panel2: #111116;
+      --border: #25232e;
+      --text: #f5f3fa;
+      --muted: #9692a3;
+      --purple: #a78bfa;
+      --purple2: #7c3aed;
+      --green: #6ee7a0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, sans-serif;
+      overflow-x: hidden;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; cursor: pointer; }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--purple);
+      outline-offset: 3px;
+    }
+
+    #glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(
+          420px circle at var(--mx, 50%) var(--my, 25%),
+          rgba(124, 58, 237, .12),
+          transparent 72%
+        );
+    }
+
+    .shell {
+      width: min(1180px, 100% - 36px);
+      margin: auto;
+      padding-bottom: 120px;
+    }
+
+    header {
+      height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #17151d;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      object-fit: cover;
+    }
+
+    .header-actions { display: flex; gap: 9px; }
+
+    .button {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px 14px;
+      background: #101014;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .button.primary {
+      background: #a78bfa;
+      color: #10091f;
+      border-color: transparent;
+    }
+
+    .hero { padding: 55px 0 30px; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #c4b5fd;
+      background: #171022;
+      border: 1px solid #332448;
+      padding: 8px 12px;
+      border-radius: 30px;
+      font-size: 12px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 65px);
+      line-height: 1.04;
+      letter-spacing: -3px;
+      margin: 20px 0 14px;
+      max-width: 760px;
+    }
+
+    .gradient {
+      background: linear-gradient(100deg, #fff, #c4b5fd 60%, #8b5cf6);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .subheading {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 650px;
+      font-size: 15px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin: 34px 0 16px;
+    }
+
+    h2 { font-size: 21px; letter-spacing: -.6px; margin: 0; }
+    .muted { color: var(--muted); font-size: 12px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, #0e0d13, #070709);
+      border-radius: 21px;
+      padding: 21px;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card h3 { margin: 0; font-size: 17px; }
+    .card p { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    .symbol {
+      display: grid;
+      place-items: center;
+      width: 43px;
+      height: 43px;
+      flex: 0 0 auto;
+      border: 1px solid #37264e;
+      background: #1a1128;
+      color: #d5c4ff;
+      border-radius: 14px;
+      font-size: 19px;
+    }
+
+    .progress-track {
+      height: 5px;
+      background: #24212c;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 16px 0 9px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, #7c3aed, #c4b5fd);
+      transition: width .25s;
+    }
+
+    .subject-list { display: grid; gap: 10px; }
+
+    .subject {
+      border: 1px solid var(--border);
+      background: #09090c;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .subject-toggle {
+      border: 0;
+      width: 100%;
+      background: transparent;
+      padding: 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
+      gap: 12px;
+    }
+
+    .subject-toggle strong { display: block; font-size: 14px; }
+    .subject-toggle small { color: var(--muted); display: block; margin-top: 5px; }
+    .chapters { padding: 0 13px 13px; }
+    .chapters[hidden] { display: none; }
+
+    .chapter {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 11px 5px;
+      border-top: 1px solid #1b1a20;
+      font-size: 13px;
+    }
+
+    .chapter input {
+      accent-color: #a78bfa;
+      width: 17px;
+      height: 17px;
+    }
+
+    .chapter span { flex: 1; }
+
+    .tiny-progress {
+      color: var(--muted);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .status-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* One-line AI composer */
+    .composer-wrap {
+      position: fixed;
+      z-index: 20;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 15px 18px max(15px, env(safe-area-inset-bottom));
+      background: linear-gradient(transparent, #000 22%);
+    }
+
+    .composer {
+      width: min(850px, 100%);
+      margin: auto;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 66px;
+      padding: 9px;
+      border: 1px solid #393044;
+      background: rgba(13, 12, 17, .96);
+      border-radius: 24px;
+      box-shadow: 0 0 35px #000, 0 0 35px #5b21b610;
+    }
+
+    .composer input {
+      min-width: 0;
+      flex: 1;
+      color: white;
+      background: transparent;
+      border: 0;
+      outline: none;
+      padding: 0 10px;
+      font-size: 14px;
+    }
+
+    .composer input::placeholder { color: #85808f; }
+
+    .model-button {
+      height: 46px;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      border: 1px solid #443257;
+      background: #20172d;
+      border-radius: 17px;
+      padding: 0 15px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .model-logo {
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      color: #e9ddff;
+      background: #61409a;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .send-button {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 17px;
+      background: #bba2ff;
+      color: #160b2c;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .model-menu {
+      position: fixed;
+      z-index: 30;
+      bottom: 94px;
+      left: max(18px, calc((100vw - 850px) / 2));
+      width: min(340px, calc(100vw - 36px));
+      padding: 9px;
+      border: 1px solid #342a43;
+      border-radius: 19px;
+      background: #100e15;
+      box-shadow: 0 18px 60px #000c;
+    }
+
+    .model-menu[hidden] { display: none; }
+
+    .menu-title {
+      padding: 10px;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .model-option {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 12px 10px;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      border-radius: 12px;
+    }
+
+    .model-option:hover { background: #201a2a; }
+    .model-info { flex: 1; min-width: 0; }
+    .model-info strong { display: block; font-size: 13px; }
+    .model-info small { color: var(--muted); font-size: 11px; }
+    .model-status { color: #c4b5fd; font-size: 10px; }
+
+    .notice {
+      position: fixed;
+      z-index: 40;
+      left: 50%;
+      bottom: 100px;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 32px);
+      background: #211a2d;
+      border: 1px solid #594276;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 12px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .notice.show { display: block; }
+
+    @media (max-width: 640px) {
+      .shell { width: calc(100% - 26px); }
+      header { height: 65px; }
+      .brand { font-size: 14px; }
+      .brand img { width: 32px; height: 32px; }
+      .header-actions .button { padding: 9px 10px; font-size: 11px; }
+      .hero { padding-top: 38px; }
+      h1 { letter-spacing: -1.7px; }
+      .grid { grid-template-columns: 1fr; }
+      .card { padding: 17px; }
+      .composer-wrap { padding: 10px 10px max(10px, env(safe-area-inset-bottom)); }
+      .composer { min-height: 58px; gap: 7px; border-radius: 21px; }
+      .composer input { padding: 0 5px; font-size: 13px; }
+      .model-button { width: 43px; height: 43px; justify-content: center; padding: 0; border-radius: 15px; }
+      .model-button .model-name,
+      .model-button .more-label,
+      .model-button .chevron { display: none; }
+      .model-logo { width: 25px; height: 25px; }
+      .send-button { width: 43px; height: 43px; border-radius: 15px; }
+      .model-menu { bottom: 79px; left: 10px; }
+      .notice { bottom: 84px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+      #glow { display: none; }
+    }
+  </style>
 </head>
+
 <body>
-<canvas id="snow" aria-hidden="true"></canvas>
+  <div id="glow" aria-hidden="true"></div>
 
-<div class="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <img src="https://i.postimg.cc/m2PRngnY/logo512-png.png"
-           alt="JEE-NEET Tracker logo">
-      <div>
-        <div class="brand-name">JEE <span style="color:var(--pink)">×</span> NEET</div>
-        <div class="brand-sub">ULTIMATE TRACKER</div>
+  <div class="shell">
+    <header>
+      <div class="brand">
+        <img src="https://i.postimg.cc/m2PRngnY/logo512-png.png" alt="">
+        <span>ACADEMY<span class="gradient">.</span></span>
       </div>
-    </div>
-
-    <div>
-      <div class="nav-label">Workspace</div>
-      <nav class="nav-list" aria-label="Main navigation">
-        <button class="nav-btn active" data-view="dashboard"><span class="nav-icon">◈</span> Dashboard</button>
-        <button class="nav-btn" data-view="syllabus"><span class="nav-icon">▤</span> Syllabus <span class="nav-count" id="navChapterCount">—</span></button>
-        <button class="nav-btn" data-view="planner"><span class="nav-icon">▦</span> Study planner</button>
-        <button class="nav-btn" data-view="resources"><span class="nav-icon">▣</span> Materials</button>
-        <button class="nav-btn" data-view="analytics"><span class="nav-icon">⌁</span> Analytics</button>
-      </nav>
-    </div>
-
-    <div>
-      <div class="nav-label">Exam centre</div>
-      <nav class="nav-list" aria-label="Exam navigation">
-        <button class="nav-btn" data-exam="JEE Main"><span class="nav-icon">⚡</span> JEE Main</button>
-        <button class="nav-btn" data-exam="JEE Advanced"><span class="nav-icon">✦</span> JEE Advanced</button>
-        <button class="nav-btn" data-exam="NEET"><span class="nav-icon">✚</span> NEET UG</button>
-      </nav>
-    </div>
-
-    <div>
-      <div class="nav-label">Manage</div>
-      <nav class="nav-list" aria-label="Management navigation">
-        <button class="nav-btn" data-view="admin"><span class="nav-icon">⚙</span> Manage materials</button>
-        <button class="nav-btn" id="exportBtn"><span class="nav-icon">⇩</span> Backup data</button>
-        <button class="nav-btn" id="importBtn"><span class="nav-icon">⇧</span> Restore backup</button>
-      </nav>
-    </div>
-
-    <div class="sidebar-bottom">
-      <div class="exam-mini">
-        <div class="exam-mini-title">Your preparation. Your pace.</div>
-        <div class="exam-mini-desc">Track what you study. Review what remains. Keep moving forward.</div>
-      </div>
-      <p class="small muted" style="padding:0 8px">Personal tracker · Data saved in this browser</p>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div style="display:flex;align-items:flex-start;gap:11px">
-        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open navigation">☰</button>
-        <div>
-          <div class="eyebrow" id="pageEyebrow">YOUR PREPARATION HQ</div>
-          <h1 class="page-title" id="pageTitle">Good to see you</h1>
-        </div>
-      </div>
-      <div class="top-actions">
-        <button class="icon-btn desktop-only" id="todayBtn" title="Go to today's plan">◷ Today</button>
-        <button class="btn btn-primary" id="quickAddBtn">＋ Quick add</button>
+      <div class="header-actions">
+        <button class="button" id="progressButton">My progress</button>
+        <button class="button primary" id="loginButton">Google login</button>
       </div>
     </header>
 
-    <!-- PART 2 STARTS HERE: paste the next code immediately below this line -->
-
-
-
-
-
-
-
-
-    
-    <!-- DASHBOARD -->
-    <section class="view active" id="view-dashboard">
-      <div class="hero">
-        <div class="eyebrow">YOUR NEXT LEVEL STARTS HERE</div>
-        <h2>Small steps today.<br><span style="background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));background-clip:text;-webkit-background-clip:text;color:transparent">Big results tomorrow.</span></h2>
-        <p>Your preparation workspace for JEE Main, JEE Advanced and NEET. Track chapters, plan study sessions and build consistency one day at a time.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-go="syllabus">Explore syllabus →</button>
-          <button class="btn" data-go="planner">＋ Plan a study session</button>
-        </div>
-      </div>
-
-      <div class="grid stats-grid">
-        <article class="card stat-card" style="--glow:rgba(244,114,208,.17)">
-          <div class="stat-label">Chapters completed <span class="stat-symbol">◈</span></div>
-          <div class="stat-value" id="statCompleted">0</div>
-          <div class="stat-foot" id="statCompletedFoot">Across your tracked syllabus</div>
-        </article>
-        <article class="card stat-card" style="--glow:rgba(96,165,250,.17)">
-          <div class="stat-label">Overall progress <span class="stat-symbol">↗</span></div>
-          <div class="stat-value" id="statProgress">0%</div>
-          <div class="stat-foot">Based on chapters you mark complete</div>
-        </article>
-        <article class="card stat-card" style="--glow:rgba(74,222,128,.15)">
-          <div class="stat-label">Study sessions <span class="stat-symbol">◷</span></div>
-          <div class="stat-value" id="statSessions">0</div>
-          <div class="stat-foot">Sessions recorded in your planner</div>
-        </article>
-        <article class="card stat-card" style="--glow:rgba(251,191,36,.16)">
-          <div class="stat-label">Materials added <span class="stat-symbol">▣</span></div>
-          <div class="stat-value" id="statMaterials">0</div>
-          <div class="stat-foot">Your saved study resources</div>
-        </article>
-      </div>
-
-      <div class="spacer"></div>
-      <div class="grid two-col">
-        <section class="card">
-          <div class="section-head">
-            <div>
-              <h2 class="section-title">Preparation overview</h2>
-              <div class="section-desc">Completion by subject</div>
-            </div>
-            <span class="chip" id="overallChip">0% complete</span>
-          </div>
-          <div id="subjectOverview">
-            <div class="empty-state">Your subject progress will appear here.</div>
-          </div>
-        </section>
-
-        <section class="card">
-          <div class="section-head">
-            <div>
-              <h2 class="section-title">Today's focus</h2>
-              <div class="section-desc">Your scheduled study sessions</div>
-            </div>
-            <button class="btn" data-go="planner">View plan</button>
-          </div>
-          <div id="todaySessions" class="resource-list">
-            <div class="resource-empty">No study sessions scheduled for today.</div>
-          </div>
-          <div class="spacer"></div>
-          <button class="btn btn-primary" style="width:100%" data-action="add-session">＋ Add study session</button>
-        </section>
-      </div>
-
-      <div class="spacer"></div>
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Continue your preparation</h2>
-            <div class="section-desc">Pick up where you left off</div>
-          </div>
-          <button class="btn" data-go="syllabus">All chapters →</button>
-        </div>
-        <div class="grid chapter-grid" id="continueChapters">
-          <div class="empty-state">Your chapters will appear here after the syllabus is loaded.</div>
-        </div>
-      </section>
-
-      <div class="spacer"></div>
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Exam countdowns</h2>
-            <div class="section-desc">Set your own target dates in settings</div>
-          </div>
-          <span class="chip">Personal targets</span>
-        </div>
-        <div class="grid timer-grid" id="countdowns">
-          <div class="empty-state">No target dates configured.</div>
-        </div>
-      </section>
+    <section class="hero">
+      <div class="eyebrow"><span class="dot"></span> JEE & NEET STUDY SPACE</div>
+      <h1>Make every study session <span class="gradient">count.</span></h1>
+      <p class="subheading">
+        Keep your chapters organised, track your progress and prepare
+        with a focused study workspace. Your personal account and AI
+        features will activate after the secure backend is connected.
+      </p>
     </section>
 
-    <!-- SYLLABUS -->
-    <section class="view" id="view-syllabus">
-      <div class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Syllabus explorer</h2>
-            <div class="section-desc">Search and filter the chapters you want to study.</div>
-          </div>
-          <span class="chip" id="syllabusCount">0 chapters</span>
-        </div>
-        <div class="exam-tabs" id="examTabs">
-          <button class="exam-tab active" data-filter-exam="All">All exams</button>
-          <button class="exam-tab" data-filter-exam="JEE Main">JEE Main</button>
-          <button class="exam-tab" data-filter-exam="JEE Advanced">JEE Advanced</button>
-          <button class="exam-tab" data-filter-exam="NEET">NEET</button>
-        </div>
-        <div class="spacer"></div>
-        <div class="chapter-tools">
-          <input class="field" style="flex:2;min-width:180px" id="chapterSearch" placeholder="Search chapters..." autocomplete="off">
-          <select class="field" style="flex:1;min-width:130px" id="classFilter">
-            <option value="All">All classes</option>
-            <option value="11">Class 11</option>
-            <option value="12">Class 12</option>
-          </select>
-          <select class="field" style="flex:1;min-width:145px" id="subjectFilter">
-            <option value="All">All subjects</option>
-            <option value="Physics">Physics</option>
-            <option value="Chemistry">Chemistry</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Biology">Biology</option>
-          </select>
-          <select class="field" style="flex:1;min-width:145px" id="statusFilter">
-            <option value="All">All progress</option>
-            <option value="Not started">Not started</option>
-            <option value="In progress">In progress</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
-        <div class="grid chapter-grid" id="chapterGrid">
-          <div class="empty-state">Loading chapters…</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAPTER DETAIL -->
-    <section class="view" id="view-chapter">
-      <div class="card">
-        <div class="section-head">
-          <div>
-            <button class="btn" data-go="syllabus">← Back to syllabus</button>
-            <div class="spacer"></div>
-            <div class="eyebrow" id="chapterEyebrow">CHAPTER WORKSPACE</div>
-            <h2 class="page-title" id="chapterHeading">Chapter</h2>
-            <p class="muted" id="chapterDescription">Your chapter workspace.</p>
-          </div>
-          <span class="chip" id="chapterBadge">Not started</span>
-        </div>
-        <div class="grid stats-grid">
-          <div class="card">
-            <div class="stat-label">Progress</div>
-            <div class="stat-value" id="chapterProgress">0%</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Resources</div>
-            <div class="stat-value" id="chapterResourceCount">0</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Study time</div>
-            <div class="stat-value" id="chapterStudyTime">0m</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Revision count</div>
-            <div class="stat-value" id="chapterRevisionCount">0</div>
-          </div>
-        </div>
-        <div class="spacer"></div>
-        <div class="section-head">
-          <h3 class="section-title">Chapter progress</h3>
-          <button class="btn btn-primary" id="completeChapterBtn">Mark completed ✓</button>
-        </div>
-        <div class="progress-track"><div class="progress-fill" id="chapterProgressBar"></div></div>
-        <div class="spacer"></div>
-        <div class="section-head">
-          <div>
-            <h3 class="section-title">Learning resources</h3>
-            <div class="section-desc">Only resources actually added to this chapter will appear.</div>
-          </div>
-          <button class="btn" data-action="add-resource">＋ Add resource</button>
-        </div>
-        <div class="exam-tabs" id="resourceTabs">
-          <button class="exam-tab active" data-resource-type="All">All</button>
-          <button class="exam-tab" data-resource-type="DPP">DPPs</button>
-          <button class="exam-tab" data-resource-type="Module">Modules</button>
-          <button class="exam-tab" data-resource-type="Test">Tests</button>
-          <button class="exam-tab" data-resource-type="PYQ">PYQs</button>
-          <button class="exam-tab" data-resource-type="Session">Sessions</button>
-        </div>
-        <div class="spacer"></div>
-        <div id="chapterResources" class="resource-list">
-          <div class="resource-empty">No resources added yet.</div>
-        </div>
-        <div class="spacer"></div>
-        <div class="section-head">
-          <h3 class="section-title">Personal notes</h3>
-          <button class="btn btn-primary" id="saveNotesBtn">Save notes</button>
-        </div>
-        <textarea class="field" id="chapterNotes" rows="5" placeholder="Write formulas, mistakes, doubts or revision notes…"></textarea>
-        <div class="spacer"></div>
-        <button class="btn" id="logRevisionBtn">↻ Log a revision</button>
-      </div>
-    </section>
-
-    <!-- STUDY PLANNER -->
-    <section class="view" id="view-planner">
-      <div class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Study planner</h2>
-            <div class="section-desc">Plan your sessions and record completed study time.</div>
-          </div>
-          <button class="btn btn-primary" data-action="add-session">＋ Add session</button>
-        </div>
-        <div class="chapter-tools">
-          <input class="field" id="plannerDate" type="date" style="max-width:220px">
-          <select class="field" id="plannerStatus" style="max-width:200px">
-            <option value="All">All sessions</option>
-            <option value="Planned">Planned</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
-        <div class="grid stats-grid">
-          <div class="card">
-            <div class="stat-label">Planned minutes</div>
-            <div class="stat-value" id="plannedMinutes">0</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Completed minutes</div>
-            <div class="stat-value" id="completedMinutes">0</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Completed sessions</div>
-            <div class="stat-value" id="completedSessionCount">0</div>
-          </div>
-          <div class="card">
-            <div class="stat-label">Planned sessions</div>
-            <div class="stat-value" id="plannedSessionCount">0</div>
-          </div>
-        </div>
-        <div class="spacer"></div>
-        <div id="plannerList" class="resource-list">
-          <div class="resource-empty">No sessions planned yet.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MATERIAL LIBRARY -->
-    <section class="view" id="view-resources">
-      <div class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Material library</h2>
-            <div class="section-desc">Your saved PDFs, links, modules, DPPs and other resources.</div>
-          </div>
-          <button class="btn btn-primary" data-action="add-resource">＋ Add material</button>
-        </div>
-        <div class="chapter-tools">
-          <input class="field" id="resourceSearch" placeholder="Search materials…" style="flex:2;min-width:180px">
-          <select class="field" id="libraryType" style="flex:1;min-width:140px">
-            <option value="All">All types</option>
-            <option value="DPP">DPP</option>
-            <option value="Module">Module</option>
-            <option value="Test">Test</option>
-            <option value="PYQ">PYQ</option>
-            <option value="Session">Session</option>
-            <option value="Notes">Notes</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div id="resourceLibrary" class="resource-list">
-          <div class="resource-empty">No materials have been added.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ANALYTICS -->
-    <section class="view" id="view-analytics">
-      <div class="grid stats-grid">
-        <div class="card">
-          <div class="stat-label">Completed chapters</div>
-          <div class="stat-value" id="analyticsCompleted">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">In-progress chapters</div>
-          <div class="stat-value" id="analyticsInProgress">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Study minutes logged</div>
-          <div class="stat-value" id="analyticsMinutes">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Revisions recorded</div>
-          <div class="stat-value" id="analyticsRevisions">0</div>
-        </div>
-      </div>
-      <div class="spacer"></div>
-      <div class="grid two-col">
-        <section class="card">
-          <div class="section-head">
-            <div>
-              <h2 class="section-title">Subject breakdown</h2>
-              <div class="section-desc">Based on your saved chapter progress</div>
-            </div>
-          </div>
-          <div id="analyticsSubjects"></div>
-        </section>
-        <section class="card">
-          <div class="section-head">
-            <div>
-              <h2 class="section-title">Preparation insights</h2>
-              <div class="section-desc">Derived from your tracker data</div>
-            </div>
-          </div>
-          <div id="analyticsInsights" class="resource-list"></div>
-        </section>
-      </div>
-    </section>
-
-    <!-- ADMIN / MATERIAL MANAGER -->
-    <section class="view" id="view-admin">
-      <div class="hero">
-        <div class="eyebrow">CONTENT WORKSPACE</div>
-        <h2>Manage your learning library.</h2>
-        <p>Add actual resource links, PDF URLs and chapter materials. These changes are saved in this browser and can be included in a JSON backup.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" data-action="add-resource">＋ Add resource</button>
-          <button class="btn" data-action="add-chapter">＋ Add chapter</button>
-          <button class="btn" id="adminExportBtn">Export JSON</button>
-        </div>
-      </div>
-      <div class="grid stats-grid">
-        <div class="card">
-          <div class="stat-label">Tracked chapters</div>
-          <div class="stat-value" id="adminChapterCount">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Saved materials</div>
-          <div class="stat-value" id="adminResourceCount">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Study sessions</div>
-          <div class="stat-value" id="adminSessionCount">0</div>
-        </div>
-        <div class="card">
-          <div class="stat-label">Storage</div>
-          <div class="stat-value" style="font-size:20px">Browser</div>
-        </div>
-      </div>
-      <div class="spacer"></div>
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Manage chapters</h2>
-            <div class="section-desc">Add custom chapters or review existing entries.</div>
-          </div>
-        </div>
-        <div id="adminChapterList" class="resource-list"></div>
-      </section>
-      <div class="spacer"></div>
-      <section class="card">
-        <div class="section-head">
-          <div>
-            <h2 class="section-title">Manage resources</h2>
-            <div class="section-desc">Edit and remove materials from this browser's saved library.</div>
-          </div>
-        </div>
-        <div id="adminResourceList" class="resource-list"></div>
-      </section>
-      <div class="spacer"></div>
-      <section class="card">
-        <h2 class="section-title">Data & privacy</h2>
-        <p class="muted">This static website saves your changes in local browser storage. They do not automatically sync to other devices or to the GitHub repository. Export a backup regularly.</p>
-        <div class="hero-actions">
-          <button class="btn" id="settingsExportBtn">Download backup</button>
-          <button class="btn" id="settingsImportBtn">Restore backup</button>
-          <button class="btn btn-danger" id="resetDataBtn">Reset saved tracker data</button>
-        </div>
-      </section>
-    </section>
-
-    <!-- PART 3 WILL CLOSE MAIN/HTML AND ADD ALL WORKING JAVASCRIPT -->
-
-
-
-
-
-
-
-
-
-
-    
-    <input type="file" id="backupFileInput" accept=".json,application/json" hidden>
-    <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal">
-        <div class="modal-head">
-          <h3 id="modalTitle">Add to your tracker</h3>
-          <button class="icon-btn" id="closeModalBtn" aria-label="Close dialog">✕</button>
-        </div>
-        <form id="modalForm">
-          <div id="modalFields" class="form-grid"></div>
-          <div class="modal-actions">
-            <button class="btn" type="button" id="cancelModalBtn">Cancel</button>
-            <button class="btn btn-primary" type="submit">Save</button>
-          </div>
-        </form>
-      </div>
+    <div class="section-head">
+      <h2>Your study space</h2>
+      <span class="muted">Progress saved on this browser</span>
     </div>
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  </main>
-</div>
 
-<script>
-(() => {
-  "use strict";
-
-  const $ = id => document.getElementById(id);
-  const STORE_KEY = "jeeNeetUltimateTracker_v1";
-
-  const SUBJECTS = ["Physics", "Chemistry", "Mathematics", "Biology"];
-  const EXAMS = ["JEE Main", "JEE Advanced", "NEET"];
-  const TYPES = ["DPP", "Module", "Test", "PYQ", "Session", "Notes", "Other"];
-
-  // Starter syllabus. Add or edit chapters in Manage materials.
-  // No sample PDFs, fake tests or invented scores are included.
-  const SYLLABUS = [
-    ["11","Physics","Physical World and Measurement"],
-    ["11","Physics","Kinematics"],
-    ["11","Physics","Laws of Motion"],
-    ["11","Physics","Work, Energy and Power"],
-    ["11","Physics","System of Particles and Rotational Motion"],
-    ["11","Physics","Gravitation"],
-    ["11","Physics","Properties of Bulk Matter"],
-    ["11","Physics","Thermodynamics"],
-    ["11","Physics","Kinetic Theory"],
-    ["11","Physics","Oscillations"],
-    ["11","Physics","Waves"],
-    ["12","Physics","Electric Charges and Fields"],
-    ["12","Physics","Electrostatic Potential and Capacitance"],
-    ["12","Physics","Current Electricity"],
-    ["12","Physics","Moving Charges and Magnetism"],
-    ["12","Physics","Magnetism and Matter"],
-    ["12","Physics","Electromagnetic Induction"],
-    ["12","Physics","Alternating Current"],
-    ["12","Physics","Electromagnetic Waves"],
-    ["12","Physics","Ray Optics"],
-    ["12","Physics","Wave Optics"],
-    ["12","Physics","Dual Nature of Radiation and Matter"],
-    ["12","Physics","Atoms"],
-    ["12","Physics","Nuclei"],
-    ["12","Physics","Semiconductor Electronics"],
-
-    ["11","Chemistry","Some Basic Concepts of Chemistry"],
-    ["11","Chemistry","Structure of Atom"],
-    ["11","Chemistry","Classification of Elements and Periodicity"],
-    ["11","Chemistry","Chemical Bonding and Molecular Structure"],
-    ["11","Chemistry","Chemical Thermodynamics"],
-    ["11","Chemistry","Equilibrium"],
-    ["11","Chemistry","Redox Reactions"],
-    ["11","Chemistry","Organic Chemistry: Basic Principles"],
-    ["11","Chemistry","Hydrocarbons"],
-    ["11","Chemistry","States of Matter"],
-    ["12","Chemistry","Solutions"],
-    ["12","Chemistry","Electrochemistry"],
-    ["12","Chemistry","Chemical Kinetics"],
-    ["12","Chemistry","The d- and f-Block Elements"],
-    ["12","Chemistry","Coordination Compounds"],
-    ["12","Chemistry","Haloalkanes and Haloarenes"],
-    ["12","Chemistry","Alcohols, Phenols and Ethers"],
-    ["12","Chemistry","Aldehydes, Ketones and Carboxylic Acids"],
-    ["12","Chemistry","Amines"],
-    ["12","Chemistry","Biomolecules"],
-    ["12","Chemistry","Principles Related to Practical Chemistry"],
-
-    ["11","Mathematics","Sets"],
-    ["11","Mathematics","Relations and Functions"],
-    ["11","Mathematics","Trigonometric Functions"],
-    ["11","Mathematics","Complex Numbers and Quadratic Equations"],
-    ["11","Mathematics","Linear Inequalities"],
-    ["11","Mathematics","Permutations and Combinations"],
-    ["11","Mathematics","Binomial Theorem"],
-    ["11","Mathematics","Sequences and Series"],
-    ["11","Mathematics","Straight Lines"],
-    ["11","Mathematics","Conic Sections"],
-    ["11","Mathematics","Introduction to Three Dimensional Geometry"],
-    ["11","Mathematics","Limits and Derivatives"],
-    ["11","Mathematics","Statistics"],
-    ["11","Mathematics","Probability"],
-    ["12","Mathematics","Relations and Functions"],
-    ["12","Mathematics","Inverse Trigonometric Functions"],
-    ["12","Mathematics","Matrices"],
-    ["12","Mathematics","Determinants"],
-    ["12","Mathematics","Continuity and Differentiability"],
-    ["12","Mathematics","Applications of Derivatives"],
-    ["12","Mathematics","Integrals"],
-    ["12","Mathematics","Applications of Integrals"],
-    ["12","Mathematics","Differential Equations"],
-    ["12","Mathematics","Vector Algebra"],
-    ["12","Mathematics","Three Dimensional Geometry"],
-    ["12","Mathematics","Linear Programming"],
-    ["12","Mathematics","Probability"],
-
-    ["11","Biology","The Living World"],
-    ["11","Biology","Biological Classification"],
-    ["11","Biology","Plant Kingdom"],
-    ["11","Biology","Animal Kingdom"],
-    ["11","Biology","Morphology of Flowering Plants"],
-    ["11","Biology","Anatomy of Flowering Plants"],
-    ["11","Biology","Structural Organisation in Animals"],
-    ["11","Biology","Cell: The Unit of Life"],
-    ["11","Biology","Biomolecules"],
-    ["11","Biology","Cell Cycle and Cell Division"],
-    ["11","Biology","Photosynthesis in Higher Plants"],
-    ["11","Biology","Respiration in Plants"],
-    ["11","Biology","Plant Growth and Development"],
-    ["11","Biology","Breathing and Exchange of Gases"],
-    ["11","Biology","Body Fluids and Circulation"],
-    ["11","Biology","Excretory Products and Their Elimination"],
-    ["11","Biology","Locomotion and Movement"],
-    ["11","Biology","Neural Control and Coordination"],
-    ["11","Biology","Chemical Coordination and Integration"],
-    ["12","Biology","Sexual Reproduction in Flowering Plants"],
-    ["12","Biology","Human Reproduction"],
-    ["12","Biology","Reproductive Health"],
-    ["12","Biology","Principles of Inheritance and Variation"],
-    ["12","Biology","Molecular Basis of Inheritance"],
-    ["12","Biology","Evolution"],
-    ["12","Biology","Human Health and Disease"],
-    ["12","Biology","Microbes in Human Welfare"],
-    ["12","Biology","Biotechnology: Principles and Processes"],
-    ["12","Biology","Biotechnology and Its Applications"],
-    ["12","Biology","Organisms and Populations"],
-    ["12","Biology","Ecosystem"],
-    ["12","Biology","Biodiversity and Conservation"]
-  ];
-
-  const slug = text => String(text || "")
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-
-  const uid = prefix =>
-    prefix + "-" + Date.now().toString(36) + "-" +
-    Math.random().toString(36).slice(2, 8);
-
-  const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;",
-    '"': "&quot;", "'": "&#39;"
-  })[char]);
-
-  const todayISO = () => {
-    const d = new Date();
-    return [
-      d.getFullYear(),
-      String(d.getMonth() + 1).padStart(2, "0"),
-      String(d.getDate()).padStart(2, "0")
-    ].join("-") ;
-  };
-
-  const defaultChapters = () => {
-    const rows = [];
-    SYLLABUS.forEach(([grade, subject, name]) => {
-      const examList = subject === "Biology"
-        ? ["NEET"]
-        : subject === "Mathematics"
-          ? ["JEE Main", "JEE Advanced"]
-          : ["JEE Main", "JEE Advanced", "NEET"];
-
-      // Stable unique identity, including grade and subject.
-      rows.push({
-        id: slug(grade + "-" + subject + "-" + name),
-        grade,
-        subject,
-        name,
-        exams: examList,
-        custom: false
-      });
-    });
-    return rows;
-  };
-
-  function blankState() {
-    return {
-      version: 1,
-      chapters: defaultChapters(),
-      progress: {},
-      resources: [],
-      sessions: [],
-      notes: {},
-      revisions: {},
-      targets: {
-        "JEE Main": "",
-        "JEE Advanced": "",
-        "NEET": ""
-      }
-    };
-  }
-
-  function loadState() {
-    try {
-      const raw = localStorage.getItem(STORE_KEY);
-      if (!raw) return blankState();
-
-      const saved = JSON.parse(raw);
-      if (!saved || typeof saved !== "object") return blankState();
-
-      const fresh = blankState();
-      const state = {
-        ...fresh,
-        ...saved,
-        chapters: Array.isArray(saved.chapters) ? saved.chapters : fresh.chapters,
-        resources: Array.isArray(saved.resources) ? saved.resources : [],
-        sessions: Array.isArray(saved.sessions) ? saved.sessions : [],
-        progress: saved.progress && typeof saved.progress === "object" ? saved.progress : {},
-        notes: saved.notes && typeof saved.notes === "object" ? saved.notes : {},
-        revisions: saved.revisions && typeof saved.revisions === "object" ? saved.revisions : {},
-        targets: { ...fresh.targets, ...(saved.targets || {}) }
-      };
-
-      // Guard against malformed or duplicate chapter IDs.
-      const used = new Set();
-      state.chapters = state.chapters.filter(ch => {
-        if (!ch || typeof ch.id !== "string" || !ch.id || used.has(ch.id)) return false;
-        used.add(ch.id);
-        return true;
-      });
-
-      return state;
-    } catch (error) {
-      console.error("Could not read saved tracker data:", error);
-      return blankState();
-    }
-  }
-
-  let state = loadState();
-  let activeView = "dashboard";
-  let activeChapterId = null;
-  let examFilter = "All";
-  let resourceTypeFilter = "All";
-  let modalMode = null;
-  let toastTimer = null;
-
-  function saveState() {
-    try {
-      localStorage.setItem(STORE_KEY, JSON.stringify(state));
-      return true;
-    } catch (error) {
-      console.error("Could not save tracker data:", error);
-      showToast("Storage is full or unavailable. Export your backup and try again.");
-      return false;
-    }
-  }
-
-  function showToast(message) {
-    const toast = $("toast");
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 3200);
-  }
-
-  function getChapter(id) {
-    return state.chapters.find(ch => ch.id === id) || null;
-  }
-
-  function getProgress(id) {
-    return state.progress[id] || {
-      status: "Not started",
-      studyMinutes: 0
-    };
-  }
-
-  function setProgress(id, patch) {
-    state.progress[id] = { ...getProgress(id), ...patch };
-    saveState();
-    renderAll();
-  }
-
-  function chapterResources(id) {
-    return state.resources.filter(resource => resource.chapterId === id);
-  }
-
-  function statusFor(chapter) {
-    return getProgress(chapter.id).status || "Not started";
-  }
-
-  function completionStats(chapters = state.chapters) {
-    const total = chapters.length;
-    const completed = chapters.filter(ch => statusFor(ch) === "Completed").length;
-    const inProgress = chapters.filter(ch => statusFor(ch) === "In progress").length;
-    return {
-      total,
-      completed,
-      inProgress,
-      percent: total ? Math.round(completed / total * 100) : 0
-    };
-  }
-
-  function allStudyMinutes() {
-    return state.sessions
-      .filter(session => session.status === "Completed")
-      .reduce((sum, session) => sum + Number(session.minutes || 0), 0);
-  }
-
-  function fmtMinutes(minutes) {
-    const n = Math.max(0, Number(minutes) || 0);
-    const hours = Math.floor(n / 60);
-    const mins = n % 60;
-    return hours ? `${hours}h ${mins}m` : `${mins}m`;
-  }
-
-  function typeIcon(type) {
-    return ({
-      DPP: "✎",
-      Module: "▤",
-      Test: "◈",
-      PYQ: "⌕",
-      Session: "◷",
-      Notes: "▧",
-      Other: "▣"
-    })[type] || "▣";
-  }
-
-  function subjectEmoji(subject) {
-    return ({
-      Physics: "⚡",
-      Chemistry: "⚗",
-      Mathematics: "∑",
-      Biology: "✿"
-    })[subject] || "◈";
-  }
-
-  function navigate(view, chapterId = null) {
-    if (view === "chapter" && !getChapter(chapterId)) {
-      showToast("That chapter could not be found.");
-      view = "syllabus";
-      chapterId = null;
-    }
-
-    activeView = view;
-    if (chapterId) activeChapterId = chapterId;
-
-    document.querySelectorAll(".view").forEach(section => {
-      section.classList.toggle("active", section.id === "view-" + view);
-    });
-
-    document.querySelectorAll(".nav-btn[data-view]").forEach(button => {
-      button.classList.toggle("active", button.dataset.view === view);
-    });
-
-    const labels = {
-      dashboard: ["YOUR PREPARATION HQ", "Your preparation dashboard"],
-      syllabus: ["CHAPTER LIBRARY", "Syllabus explorer"],
-      chapter: ["YOUR CHAPTER WORKSPACE", getChapter(activeChapterId)?.name || "Chapter"],
-      planner: ["PLAN WITH PURPOSE", "Study planner"],
-      resources: ["YOUR LEARNING LIBRARY", "Materials"],
-      analytics: ["YOUR PROGRESS, VISUALISED", "Analytics"],
-      admin: ["PERSONAL CONTENT WORKSPACE", "Manage materials"]
-    };
-
-    const label = labels[view] || labels.dashboard;
-    $("pageEyebrow").textContent = label[0];
-    $("pageTitle").textContent = label[1];
-    $("sidebar").classList.remove("open");
-
-    if (view === "chapter") renderChapterDetail();
-    if (view === "planner") renderPlanner();
-    if (view === "resources") renderResourceLibrary();
-    if (view === "admin") renderAdmin();
-    if (view === "analytics") renderAnalytics();
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  function renderAll() {
-    renderDashboard();
-    renderSyllabus();
-    renderPlanner();
-    renderResourceLibrary();
-    renderAnalytics();
-    renderAdmin();
-    updateNavCounts();
-
-    if (activeView === "chapter") renderChapterDetail();
-  }
-
-  function updateNavCounts() {
-    $("navChapterCount").textContent = state.chapters.length;
-    $("syllabusCount").textContent =
-      `${state.chapters.length} chapters`;
-  }
-
-  function renderSubjectProgress(container, chapters) {
-    const list = SUBJECTS.filter(subject =>
-      chapters.some(ch => ch.subject === subject)
-    );
-
-    if (!list.length) {
-      container.innerHTML = '<div class="empty-state">No chapters to display.</div>';
-      return;
-    }
-
-    container.innerHTML = list.map(subject => {
-      const rows = chapters.filter(ch => ch.subject === subject);
-      const stats = completionStats(rows);
-      return `
-        <div class="subject-row">
-          <div class="subject-top">
-            <span class="subject-name">${subjectEmoji(subject)} ${esc(subject)}</span>
-            <span class="subject-percent">${stats.completed}/${stats.total} completed · ${stats.percent}%</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" style="width:${stats.percent}%"></div>
-          </div>
-        </div>`;
-    }).join("");
-  }
-
-  function chapterCard(chapter) {
-    const progress = getProgress(chapter.id);
-    const resources = chapterResources(chapter.id).length;
-    const percent = progress.status === "Completed" ? 100 :
-      progress.status === "In progress" ? 50 : 0;
-
-    return `
-      <article class="card chapter-card" data-open-chapter="${esc(chapter.id)}" tabindex="0" role="button" aria-label="Open ${esc(chapter.name)}">
-        <div class="chapter-top">
+    <section class="grid">
+      <article class="card">
+        <div class="card-top">
           <div>
-            <div class="chapter-title">${subjectEmoji(chapter.subject)} ${esc(chapter.name)}</div>
-            <div class="chapter-meta">Class ${esc(chapter.grade)} · ${esc(chapter.subject)}</div>
+            <h3>Class 11</h3>
+            <p>Physics, Chemistry, Mathematics and Biology</p>
           </div>
-          <span class="chapter-status">${esc(progress.status)}</span>
+          <div class="symbol">11</div>
         </div>
-        <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
-        <div class="chapter-footer">
-          <span class="small muted">${resources} resource${resources === 1 ? "" : "s"}</span>
-          <span class="small">${percent}% →</span>
-        </div>
-      </article>`;
-  }
+        <div class="progress-track"><div class="progress-fill" id="progress11"></div></div>
+        <div class="muted" id="label11">0% completed</div>
+      </article>
 
-  function renderDashboard() {
-    const stats = completionStats();
-    $("statCompleted").textContent = stats.completed;
-    $("statCompletedFoot").textContent = `Out of ${stats.total} tracked chapters`;
-    $("statProgress").textContent = stats.percent + "%";
-    $("statSessions").textContent = state.sessions.length;
-    $("statMaterials").textContent = state.resources.length;
-    $("overallChip").textContent = stats.percent + "% complete";
-
-    renderSubjectProgress($("subjectOverview"), state.chapters);
-
-    const todaySessions = state.sessions
-      .filter(session => session.date === todayISO())
-      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
-
-    $("todaySessions").innerHTML = todaySessions.length
-      ? todaySessions.map(sessionCard).join("")
-      : '<div class="resource-empty">No sessions scheduled for today. Add a study session to plan your day.</div>';
-
-    const unfinished = state.chapters
-      .filter(ch => statusFor(ch) !== "Completed")
-      .sort((a, b) => {
-        const aActive = statusFor(a) === "In progress" ? 0 : 1;
-        const bActive = statusFor(b) === "In progress" ? 0 : 1;
-        return aActive - bActive || a.name.localeCompare(b.name);
-      }).slice(0, 4);
-
-    $("continueChapters").innerHTML = unfinished.length
-      ? unfinished.map(chapterCard).join("")
-      : '<div class="empty-state">All currently tracked chapters are marked complete.</div>';
-
-    renderCountdowns();
-  }
-
-  function renderCountdowns() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    $("countdowns").innerHTML = EXAMS.map(exam => {
-      const target = state.targets[exam];
-      if (!target) {
-        return `
-          <article class="card">
-            <div class="section-title">${esc(exam)}</div>
-            <p class="muted small">No target date set.</p>
-            <button class="btn" data-set-target="${esc(exam)}">Set target date</button>
-          </article>`;
-      }
-
-      const date = new Date(target + "T00:00:00");
-      const days = Math.ceil((date - today) / 86400000);
-      const text = days < 0 ? `${Math.abs(days)} days past target`
-        : days === 0 ? "Target day"
-        : `${days} days remaining`;
-
-      return `
-        <article class="card">
-          <div class="section-title">${esc(exam)}</div>
-          <div class="stat-value">${days >= 0 ? days : Math.abs(days)}</div>
-          <div class="muted small">${esc(text)}</div>
-          <div class="small muted">${esc(target)}</div>
-          <button class="btn" style="margin-top:10px" data-set-target="${esc(exam)}">Change date</button>
-        </article>`;
-    }).join("");
-  }
-
-  function filteredChapters() {
-    const search = $("chapterSearch").value.trim().toLowerCase();
-    const grade = $("classFilter").value;
-    const subject = $("subjectFilter").value;
-    const status = $("statusFilter").value;
-
-    return state.chapters.filter(ch => {
-      const matchesSearch = !search ||
-        `${ch.name} ${ch.subject} ${ch.grade}`.toLowerCase().includes(search);
-      const matchesExam = examFilter === "All" || ch.exams.includes(examFilter);
-      const matchesGrade = grade === "All" || ch.grade === grade;
-      const matchesSubject = subject === "All" || ch.subject === subject;
-      const matchesStatus = status === "All" || statusFor(ch) === status;
-      return matchesSearch && matchesExam && matchesGrade &&
-        matchesSubject && matchesStatus;
-    });
-  }
-
-  function renderSyllabus() {
-    const chapters = filteredChapters();
-    $("syllabusCount").textContent =
-      `${chapters.length} of ${state.chapters.length} chapters`;
-
-    $("chapterGrid").innerHTML = chapters.length
-      ? chapters.map(chapterCard).join("")
-      : '<div class="empty-state">No matching chapters. Try changing the filters or add a chapter.</div>';
-  }
-
-  function renderChapterDetail() {
-    const chapter = getChapter(activeChapterId);
-    if (!chapter) return;
-
-    const progress = getProgress(chapter.id);
-    const resources = chapterResources(chapter.id);
-    const revisions = Number(state.revisions[chapter.id] || 0);
-    const percent = progress.status === "Completed" ? 100 :
-      progress.status === "In progress" ? 50 : 0;
-
-    $("chapterEyebrow").textContent =
-      `CLASS ${chapter.grade} · ${chapter.subject.toUpperCase()}`;
-    $("chapterHeading").textContent = chapter.name;
-    $("chapterDescription").textContent =
-      `Track your progress and keep all actual ${chapter.subject.toLowerCase()} resources together.`;
-    $("chapterBadge").textContent = progress.status;
-    $("chapterProgress").textContent = percent + "%";
-    $("chapterResourceCount").textContent = resources.length;
-    $("chapterStudyTime").textContent = fmtMinutes(progress.studyMinutes || 0);
-    $("chapterRevisionCount").textContent = revisions;
-    $("chapterProgressBar").style.width = percent + "%";
-    $("completeChapterBtn").textContent =
-      progress.status === "Completed" ? "Mark in progress ↻" : "Mark completed ✓";
-    $("chapterNotes").value = state.notes[chapter.id] || "";
-
-    const filtered = resourceTypeFilter === "All" ? resources :
-      resources.filter(resource => resource.type === resourceTypeFilter);
-
-    $("chapterResources").innerHTML = filtered.length
-      ? filtered.map(resourceCard).join("")
-      : '<div class="resource-empty">No resources in this category yet. Add a real PDF link or study resource to get started.</div>';
-
-    document.querySelectorAll("[data-resource-type]").forEach(button => {
-      button.classList.toggle("active", button.dataset.resourceType === resourceTypeFilter);
-    });
-  }
-
-  function resourceCard(resource, admin = false) {
-    const chapter = getChapter(resource.chapterId);
-    const validUrl = safeHttpUrl(resource.url);
-    const openLink = validUrl
-      ? `<a class="btn" href="${esc(validUrl)}" target="_blank" rel="noopener noreferrer">Open ↗</a>`
-      : `<span class="chip">No link</span>`;
-
-    return `
-      <article class="resource-row">
-        <div class="resource-icon">${typeIcon(resource.type)}</div>
-        <div class="resource-info">
-          <div class="resource-title">${esc(resource.title)}</div>
-          <div class="resource-sub">${esc(resource.type)}${chapter ? " · " + esc(chapter.name) : ""}</div>
-          ${resource.description ? `<div class="resource-sub">${esc(resource.description)}</div>` : ""}
-        </div>
-        ${openLink}
-        ${admin ? `<button class="btn btn-danger" data-delete-resource="${esc(resource.id)}" aria-label="Delete resource">Delete</button>` : ""}
-      </article>`;
-  }
-
-  function safeHttpUrl(value) {
-    try {
-      const url = new URL(String(value || ""));
-      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
-    } catch {
-      return "";
-    }
-  }
-
-  function sessionCard(session) {
-    const chapter = getChapter(session.chapterId);
-    return `
-      <article class="resource-row">
-        <div class="resource-icon">◷</div>
-        <div class="resource-info">
-          <div class="resource-title">${esc(session.title)}</div>
-          <div class="resource-sub">
-            ${esc(session.date)}${session.time ? " · " + esc(session.time) : ""}
-            · ${esc(session.minutes)} minutes
-            ${chapter ? " · " + esc(chapter.name) : ""}
+      <article class="card">
+        <div class="card-top">
+          <div>
+            <h3>Class 12</h3>
+            <p>Physics, Chemistry, Mathematics and Biology</p>
           </div>
-          <div class="resource-sub">Status: ${esc(session.status)}</div>
+          <div class="symbol">12</div>
         </div>
-        ${session.status !== "Completed"
-          ? `<button class="btn" data-complete-session="${esc(session.id)}">Complete</button>`
-          : `<span class="chip">✓ Done</span>`}
-        <button class="btn btn-danger" data-delete-session="${esc(session.id)}">Delete</button>
-      </article>`;
-  }
+        <div class="progress-track"><div class="progress-fill" id="progress12"></div></div>
+        <div class="muted" id="label12">0% completed</div>
+      </article>
+    </section>
 
-  function renderPlanner() {
-    if (!$("plannerDate").value) $("plannerDate").value = todayISO();
+    <div class="section-head">
+      <h2>Chapter tracker</h2>
+      <span class="muted">Tick a chapter when completed</span>
+    </div>
+    <section id="subjects" class="subject-list"></section>
 
-    const selectedDate = $("plannerDate").value;
-    const status = $("plannerStatus").value;
+    <p class="status-note">
+      Note: this first frontend version stores chapter checkmarks in this
+      browser only. Google authentication, cloud sync, AI answers and
+      account-specific analytics are not connected yet.
+    </p>
+  </div>
 
-    const list = state.sessions
-      .filter(session => (!selectedDate || session.date === selectedDate))
-      .filter(session => status === "All" || session.status === status)
-      .sort((a, b) => (a.time || "").localeCompare(b.time || ""));
+  <div class="composer-wrap">
+    <form class="composer" id="chatForm">
+      <input id="message" type="text" autocomplete="off"
+        placeholder="Ask a JEE / NEET question..." aria-label="Your message">
+      <button class="model-button" id="modelButton" type="button"
+        aria-haspopup="true" aria-expanded="false" aria-label="Choose AI model">
+        <span class="model-logo" id="selectedLogo">G</span>
+        <span class="model-name" id="selectedName">Gemini</span>
+        <span class="more-label">More</span>
+        <span class="chevron">⌄</span>
+      </button>
+      <button class="send-button" type="submit" aria-label="Send message">↑</button>
+    </form>
+  </div>
 
-    $("plannerList").innerHTML = list.length
-      ? list.map(sessionCard).join("")
-      : '<div class="resource-empty">No matching sessions. Use “Add session” to plan your study time.</div>';
+  <div class="model-menu" id="modelMenu" hidden>
+    <div class="menu-title">Choose an AI model</div>
+    <button class="model-option" data-name="Gemini" data-logo="G" type="button">
+      <span class="model-logo">G</span>
+      <span class="model-info"><strong>Gemini</strong><small>Google AI</small></span>
+      <span class="model-status">Not connected</span>
+    </button>
+    <button class="model-option" data-name="Groq" data-logo="Q" type="button">
+      <span class="model-logo">Q</span>
+      <span class="model-info"><strong>Groq</strong><small>AI inference provider</small></span>
+      <span class="model-status">Not connected</span>
+    </button>
+    <button class="model-option" data-name="OpenRouter" data-logo="O" type="button">
+      <span class="model-logo">O</span>
+      <span class="model-info"><strong>OpenRouter</strong><small>Multi-model API</small></span>
+      <span class="model-status">Not connected</span>
+    </button>
+  </div>
 
-    const daySessions = state.sessions.filter(session =>
-      !selectedDate || session.date === selectedDate
-    );
-    const planned = daySessions
-      .filter(session => session.status !== "Completed")
-      .reduce((sum, session) => sum + Number(session.minutes || 0), 0);
-    const completed = daySessions
-      .filter(session => session.status === "Completed")
-      .reduce((sum, session) => sum + Number(session.minutes || 0), 0);
+  <div class="notice" id="notice" role="status" aria-live="polite"></div>
 
-    $("plannedMinutes").textContent = planned;
-    $("completedMinutes").textContent = completed;
-    $("completedSessionCount").textContent =
-      daySessions.filter(session => session.status === "Completed").length;
-    $("plannedSessionCount").textContent =
-      daySessions.filter(session => session.status !== "Completed").length;
-  }
+  <script>
+    /*
+      This is a frontend starter.
+      Do not put API keys in this file.
+      Connect AI requests to a Cloudflare Worker in a later step.
+    */
 
-  function renderResourceLibrary() {
-    const search = $("resourceSearch").value.trim().toLowerCase();
-    const type = $("libraryType").value;
-
-    const resources = state.resources.filter(resource => {
-      const matchesText = !search ||
-        `${resource.title} ${resource.description || ""} ${resource.type}`.toLowerCase().includes(search);
-      const matchesType = type === "All" || resource.type === type;
-      return matchesText && matchesType;
-    });
-
-    $("resourceLibrary").innerHTML = resources.length
-      ? resources.map(resource => resourceCard(resource)).join("")
-      : '<div class="resource-empty">No matching materials. Add a resource using its real URL.</div>';
-  }
-
-  function renderAnalytics() {
-    const stats = completionStats();
-    $("analyticsCompleted").textContent = stats.completed;
-    $("analyticsInProgress").textContent = stats.inProgress;
-    $("analyticsMinutes").textContent = allStudyMinutes();
-    $("analyticsRevisions").textContent =
-      Object.values(state.revisions).reduce((sum, value) => sum + Number(value || 0), 0);
-
-    renderSubjectProgress($("analyticsSubjects"), state.chapters);
-
-    const unstarted = state.chapters.filter(ch => statusFor(ch) === "Not started").length;
-    const completedSessions = state.sessions.filter(session => session.status === "Completed").length;
-    const insights = [
-      ["Overall completion", `${stats.percent}% of tracked chapters are marked completed.`],
-      ["Remaining chapters", `${Math.max(0, stats.total - stats.completed)} chapters are not yet marked completed.`],
-      ["Study consistency", `${completedSessions} sessions marked completed in your planner.`],
-      ["Logged study time", `${fmtMinutes(allStudyMinutes())} recorded from completed sessions.`]
+    const DB = [
+      { cls: "11th", sub: "Mathematics", ch: [
+        "Basic Mathematics", "Sets", "Trigonometric Functions",
+        "Trigonometric Equations", "Quadratic Equations",
+        "Sequences and Series", "Relations and Functions",
+        "Permutations and Combinations", "Binomial Theorem",
+        "Limits and Derivatives", "Linear Inequalities",
+        "Straight Lines", "Circles", "Parabola", "Ellipse",
+        "Hyperbola", "Probability", "Introduction to 3D",
+        "Complex Numbers", "Statistics", "Solutions of Triangles"
+      ]},
+      { cls: "11th", sub: "Physics", ch: [
+        "Units and Dimensions", "Basic Mathematics", "Vectors",
+        "Motion in a Straight Line", "Errors and Measurements",
+        "Motion in a Plane", "Laws of Motion", "Circular Motion",
+        "Work, Power and Energy", "Centre of Mass",
+        "Thermal Properties of Matter", "Mechanical Properties of Solids",
+        "Rotational Motion", "Kinetic Theory and Thermodynamics",
+        "Oscillations", "Waves", "Mechanical Properties of Fluids",
+        "Gravitation"
+      ]},
+      { cls: "11th", sub: "Chemistry", ch: [
+        "Mole Concept", "Structure of Atom", "States of Matter",
+        "Thermodynamics", "Redox Reactions", "Chemical Equilibrium",
+        "Ionic Equilibrium", "IUPAC Nomenclature", "Isomerism",
+        "General Organic Chemistry", "Hydrocarbons", "Purification",
+        "Environmental Chemistry", "Periodic Table", "Chemical Bonding",
+        "P-Block", "S-Block", "Hydrogen"
+      ]},
+      { cls: "11th", sub: "Biology", ch: [
+        "Cell: The Unit of Life", "Cell Cycle and Cell Division",
+        "The Living World", "Biological Classification", "Plant Kingdom",
+        "Morphology", "Anatomy", "Photosynthesis", "Respiration",
+        "Plant Growth", "Structural Organisation", "Breathing",
+        "Body Fluids", "Excretory Products", "Locomotion",
+        "Neural Control", "Chemical Coordination", "Animal Kingdom",
+        "Biomolecules"
+      ]},
+      { cls: "12th", sub: "Mathematics", ch: [
+        "Determinants", "Matrices", "Relations and Functions",
+        "Inverse Trigonometric Functions", "Limits and Continuity",
+        "Differentiation", "Applications of Derivatives",
+        "Indefinite Integration", "Definite Integration",
+        "Applications of Integrals", "Differential Equations",
+        "Vector Algebra", "Three-Dimensional Geometry", "Probability"
+      ]},
+      { cls: "12th", sub: "Physics", ch: [
+        "Electric Charges and Fields", "Electrostatic Potential",
+        "Current Electricity", "Moving Charges", "Magnetism and Matter",
+        "Electromagnetic Induction", "Alternating Current",
+        "Electromagnetic Waves", "Ray Optics", "Wave Optics",
+        "Dual Nature", "Atoms", "Nuclei", "Semiconductors"
+      ]},
+      { cls: "12th", sub: "Chemistry", ch: [
+        "Solutions", "Electrochemistry", "Chemical Kinetics",
+        "Surface Chemistry", "Optical Isomerism", "Hydrocarbons",
+        "Haloalkanes", "Alcohols", "Aldehydes", "Amines",
+        "Biomolecules", "Polymers", "Chemistry in Everyday Life",
+        "Environmental Chemistry", "Coordination Compounds",
+        "P-Block", "D- and F-Block", "Qualitative Analysis",
+        "Isolation of Metals"
+      ]},
+      { cls: "12th", sub: "Biology", ch: [
+        "Sexual Reproduction", "Principles of Inheritance",
+        "Molecular Basis of Inheritance", "Microbes",
+        "Tissue Culture", "Organisms and Populations", "Ecosystem",
+        "Biodiversity", "Human Reproduction", "Reproductive Health",
+        "Human Health", "Biotechnology: Principles",
+        "Biotechnology: Applications", "Evolution"
+      ]}
     ];
 
-    $("analyticsInsights").innerHTML = insights.map(([title, description]) => `
-      <div class="resource-row">
-        <div class="resource-icon">↗</div>
-        <div class="resource-info">
-          <div class="resource-title">${esc(title)}</div>
-          <div class="resource-sub">${esc(description)}</div>
-        </div>
-      </div>`).join("");
-  }
+    const KEY_PREFIX = "academy.chapter.v1.";
+    const subjects = document.getElementById("subjects");
+    const notice = document.getElementById("notice");
+    let noticeTimer;
 
-  function renderAdmin() {
-    $("adminChapterCount").textContent = state.chapters.length;
-    $("adminResourceCount").textContent = state.resources.length;
-    $("adminSessionCount").textContent = state.sessions.length;
-
-    $("adminChapterList").innerHTML = state.chapters.length
-      ? state.chapters.map(chapter => `
-        <article class="resource-row">
-          <div class="resource-icon">${subjectEmoji(chapter.subject)}</div>
-          <div class="resource-info">
-            <div class="resource-title">${esc(chapter.name)}</div>
-            <div class="resource-sub">Class ${esc(chapter.grade)} · ${esc(chapter.subject)} · ${esc(statusFor(chapter))}</div>
-          </div>
-          <button class="btn" data-open-chapter="${esc(chapter.id)}">Open</button>
-          ${chapter.custom ? `<button class="btn btn-danger" data-delete-chapter="${esc(chapter.id)}">Delete</button>` : ""}
-        </article>`).join("")
-      : '<div class="resource-empty">No chapters available.</div>';
-
-    $("adminResourceList").innerHTML = state.resources.length
-      ? state.resources.map(resource => resourceCard(resource, true)).join("")
-      : '<div class="resource-empty">No resources have been added.</div>';
-  }
-
-  function openModal(mode, extra = {}) {
-    modalMode = { mode, ...extra };
-    $("modalFields").innerHTML = "";
-    $("modalTitle").textContent = "Add to your tracker";
-
-    const field = (name, label, type = "text", options = {}, required = true) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "form-field" + (options.full ? " full" : "");
-
-      const labelEl = document.createElement("label");
-      labelEl.textContent = label;
-      labelEl.htmlFor = "modal-" + name;
-      wrapper.appendChild(labelEl);
-
-      let input;
-      if (type === "select") {
-        input = document.createElement("select");
-        (options.choices || []).forEach(choice => {
-          const opt = document.createElement("option");
-          opt.value = choice.value;
-          opt.textContent = choice.label;
-          input.appendChild(opt);
-        });
-      } else if (type === "textarea") {
-        input = document.createElement("textarea");
-        input.rows = 3;
-      } else {
-        input = document.createElement("input");
-        input.type = type;
-      }
-
-      input.id = "modal-" + name;
-      input.name = name;
-      input.className = "field";
-      input.required = required;
-      if (options.value != null) input.value = options.value;
-      if (options.min != null) input.min = options.min;
-      if (options.max != null) input.max = options.max;
-      if (options.placeholder) input.placeholder = options.placeholder;
-      wrapper.appendChild(input);
-      $("modalFields").appendChild(wrapper);
-    };
-
-    if (mode === "resource") {
-      $("modalTitle").textContent = "Add study material";
-      field("title", "Material title", "text", { placeholder: "e.g. Chapter DPP 01" });
-      field("type", "Material type", "select", {
-        choices: TYPES.map(type => ({ value: type, label: type }))
-      });
-      field("chapterId", "Chapter", "select", {
-        full: true,
-        choices: [
-          { value: "", label: "General / not chapter-specific" },
-          ...state.chapters.map(ch => ({
-            value: ch.id,
-            label: `Class ${ch.grade} · ${ch.subject} · ${ch.name}`
-          }))
-        ],
-        value: extra.chapterId || ""
-      }, false);
-      field("url", "PDF or resource URL (optional)", "url", {
-        full: true,
-        placeholder: "https://…"
-      }, false);
-      field("description", "Notes (optional)", "textarea", {
-        full: true,
-        placeholder: "Publisher, DPP number, topic or other details…"
-      }, false);
-    } else if (mode === "session") {
-      $("modalTitle").textContent = "Plan a study session";
-      field("title", "Session title", "text", { placeholder: "e.g. Electrostatics practice" });
-      field("date", "Study date", "date", { value: extra.date || todayISO() });
-      field("time", "Start time (optional)", "time", {}, false);
-      field("minutes", "Planned duration (minutes)", "number", { value: "60", min: "1", max: "1440" });
-      field("chapterId", "Chapter (optional)", "select", {
-        full: true,
-        choices: [
-          { value: "", label: "Select chapter" },
-          ...state.chapters.map(ch => ({
-            value: ch.id,
-            label: `Class ${ch.grade} · ${ch.subject} · ${ch.name}`
-          }))
-        ]
-      }, false);
-      field("notes", "Session notes (optional)", "textarea", { full: true }, false);
-    } else if (mode === "chapter") {
-      $("modalTitle").textContent = "Add a chapter";
-      field("name", "Chapter name", "text", { placeholder: "Enter chapter name" });
-      field("grade", "Class", "select", {
-        choices: [
-          { value: "11", label: "Class 11" },
-          { value: "12", label: "Class 12" }
-        ]
-      });
-      field("subject", "Subject", "select", {
-        choices: SUBJECTS.map(subject => ({ value: subject, label: subject }))
-      });
-      field("exams", "Primary exam", "select", {
-        choices: EXAMS.map(exam => ({ value: exam, label: exam }))
-      });
-    } else if (mode === "target") {
-      $("modalTitle").textContent = "Set exam target date";
-      field("exam", "Exam", "select", {
-        choices: EXAMS.map(exam => ({ value: exam, label: exam })),
-        value: extra.exam
-      });
-      field("date", "Target date", "date", {
-        value: state.targets[extra.exam] || ""
-      });
+    function showNotice(message) {
+      notice.textContent = message;
+      notice.classList.add("show");
+      clearTimeout(noticeTimer);
+      noticeTimer = setTimeout(() => notice.classList.remove("show"), 3500);
     }
 
-    $("modalBackdrop").classList.add("open");
-    const first = $("modalFields").querySelector("input,select,textarea");
-    if (first) first.focus();
-  }
-
-  function closeModal() {
-    $("modalBackdrop").classList.remove("open");
-    modalMode = null;
-    $("modalForm").reset();
-  }
-
-  function handleModalSubmit(event) {
-    event.preventDefault();
-    if (!modalMode) return;
-
-    const values = Object.fromEntries(new FormData($("modalForm")).entries());
-    const mode = modalMode.mode;
-
-    if (mode === "resource") {
-      const title = values.title.trim();
-      const url = values.url.trim();
-
-      if (!title) return showToast("Enter a material title.");
-      if (url && !safeHttpUrl(url)) {
-        return showToast("Enter a valid http or https URL.");
-      }
-
-      state.resources.push({
-        id: uid("resource"),
-        title,
-        type: TYPES.includes(values.type) ? values.type : "Other",
-        chapterId: values.chapterId || "",
-        url: url ? safeHttpUrl(url) : "",
-        description: values.description.trim(),
-        createdAt: new Date().toISOString()
-      });
-      saveState();
-      closeModal();
-      renderAll();
-      if (activeView === "chapter") renderChapterDetail();
-      showToast("Material saved in this browser.");
+    function isComplete(item, index) {
+      return localStorage.getItem(KEY_PREFIX + item.cls + "." + item.sub + "." + index) === "1";
     }
 
-    if (mode === "session") {
-      const minutes = Number(values.minutes);
-      if (!values.title.trim()) return showToast("Enter a session title.");
-      if (!values.date || !Number.isFinite(minutes) || minutes < 1 || minutes > 1440) {
-        return showToast("Check the date and duration.");
-      }
+    function renderSubjects() {
+      subjects.innerHTML = "";
 
-      state.sessions.push({
-        id: uid("session"),
-        title: values.title.trim(),
-        date: values.date,
-        time: values.time || "",
-        minutes,
-        chapterId: values.chapterId || "",
-        notes: (values.notes || "").trim(),
-        status: "Planned",
-        createdAt: new Date().toISOString()
-      });
-      closeModal();
-      saveState();
-      renderAll();
-      showToast("Study session added.");
-    }
+      DB.forEach((item, itemIndex) => {
+        const section = document.createElement("section");
+        section.className = "subject";
 
-    if (mode === "chapter") {
-      const name = values.name.trim();
-      if (!name) return showToast("Enter a chapter name.");
-
-      const base = slug(values.grade + "-" + values.subject + "-" + name);
-      let id = base;
-      let n = 2;
-      while (getChapter(id)) id = `${base}-${n++}`;
-
-      state.chapters.push({
-        id,
-        name,
-        grade: values.grade,
-        subject: values.subject,
-        exams: [values.exams],
-        custom: true
-      });
-      closeModal();
-      saveState();
-      renderAll();
-      showToast("Chapter added.");
-    }
-
-    if (mode === "target") {
-      const exam = values.exam;
-      if (!EXAMS.includes(exam)) return showToast("Select a valid exam.");
-      state.targets[exam] = values.date || "";
-      closeModal();
-      saveState();
-      renderAll();
-      showToast("Target date saved.");
-    }
-  }
-
-  function exportBackup() {
-    const data = {
-      app: "JEE-NEET Ultimate Tracker",
-      exportedAt: new Date().toISOString(),
-      state
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], {
-      type: "application/json"
-    });
-    const url = URL.createObjectURL(blob);
-    const anchor = document.createElement("a");
-    anchor.href = url;
-    anchor.download = "jee-neet-tracker-backup.json";
-    document.body.appendChild(anchor);
-    anchor.click();
-    anchor.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    showToast("Backup downloaded.");
-  }
-
-  function importBackup(file) {
-    if (!file) return;
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(String(reader.result || ""));
-        const incoming = parsed.state || parsed;
-
-        if (!incoming || !Array.isArray(incoming.chapters) ||
-            !Array.isArray(incoming.resources) ||
-            !Array.isArray(incoming.sessions)) {
-          throw new Error("This does not look like a tracker backup.");
-        }
-
-        const confirmed = window.confirm(
-          "Restore this backup? Your current saved tracker data will be replaced."
+        const doneCount = item.ch.reduce(
+          (count, _, index) => count + (isComplete(item, index) ? 1 : 0), 0
         );
-        if (!confirmed) return;
 
-        const fresh = blankState();
-        state = {
-          ...fresh,
-          ...incoming,
-          progress: incoming.progress && typeof incoming.progress === "object" ? incoming.progress : {},
-          notes: incoming.notes && typeof incoming.notes === "object" ? incoming.notes : {},
-          revisions: incoming.revisions && typeof incoming.revisions === "object" ? incoming.revisions : {},
-          targets: { ...fresh.targets, ...(incoming.targets || {}) }
-        };
+        const toggle = document.createElement("button");
+        toggle.className = "subject-toggle";
+        toggle.type = "button";
+        toggle.setAttribute("aria-expanded", itemIndex === 0 ? "true" : "false");
 
-        saveState();
-        activeChapterId = null;
-        renderAll();
-        navigate("dashboard");
-        showToast("Backup restored.");
-      } catch (error) {
-        showToast("Backup could not be restored: " + error.message);
-      } finally {
-        $("backupFileInput").value = "";
-      }
-    };
+        const title = document.createElement("span");
+        title.innerHTML = "<strong></strong><small></small>";
+        title.querySelector("strong").textContent = item.sub + " · Class " + item.cls;
+        title.querySelector("small").textContent = item.ch.length + " chapters";
 
-    reader.onerror = () => showToast("Could not read the selected file.");
-    reader.readAsText(file);
-  }
+        const count = document.createElement("span");
+        count.className = "tiny-progress";
+        count.textContent = doneCount + " / " + item.ch.length + " · " +
+          Math.round(doneCount / item.ch.length * 100) + "%";
 
-  function deleteResource(id) {
-    const resource = state.resources.find(item => item.id === id);
-    if (!resource) return;
-    if (!window.confirm(`Delete "${resource.title}"?`)) return;
+        toggle.append(title, count);
 
-    state.resources = state.resources.filter(item => item.id !== id);
-    saveState();
-    renderAll();
-    showToast("Material deleted.");
-  }
+        const list = document.createElement("div");
+        list.className = "chapters";
+        list.hidden = itemIndex !== 0;
 
-  function deleteSession(id) {
-    const session = state.sessions.find(item => item.id === id);
-    if (!session) return;
-    if (!window.confirm(`Delete "${session.title}"?`)) return;
+        item.ch.forEach((chapter, index) => {
+          const label = document.createElement("label");
+          label.className = "chapter";
 
-    state.sessions = state.sessions.filter(item => item.id !== id);
-    saveState();
-    renderAll();
-    showToast("Study session deleted.");
-  }
-
-  function deleteChapter(id) {
-    const chapter = getChapter(id);
-    if (!chapter || !chapter.custom) return;
-    if (!window.confirm(`Delete chapter "${chapter.name}" and its associated progress, notes and resources?`)) return;
-
-    state.chapters = state.chapters.filter(ch => ch.id !== id);
-    delete state.progress[id];
-    delete state.notes[id];
-    delete state.revisions[id];
-    state.resources = state.resources.filter(resource => resource.chapterId !== id);
-    state.sessions = state.sessions.map(session =>
-      session.chapterId === id ? { ...session, chapterId: "" } : session
-    );
-
-    if (activeChapterId === id) {
-      activeChapterId = null;
-      navigate("syllabus");
-    }
-    saveState();
-    renderAll();
-    showToast("Custom chapter deleted.");
-  }
-
-  function handleClick(event) {
-    const target = event.target.closest("button,[data-open-chapter]");
-    if (!target) return;
-
-    if (target.matches("[data-view]")) {
-      navigate(target.dataset.view);
-      return;
-    }
-
-    if (target.dataset.go) {
-      navigate(target.dataset.go);
-      return;
-    }
-
-    if (target.dataset.openChapter) {
-      navigate("chapter", target.dataset.openChapter);
-      return;
-    }
-
-    if (target.dataset.exam) {
-      examFilter = target.dataset.exam;
-      document.querySelectorAll(".exam-tab[data-filter-exam]").forEach(button => {
-        button.classList.toggle("active", button.dataset.filterExam === examFilter);
-      });
-      navigate("syllabus");
-      renderSyllabus();
-      return;
-    }
-
-    if (target.dataset.filterExam) {
-      examFilter = target.dataset.filterExam;
-      document.querySelectorAll("[data-filter-exam]").forEach(button => {
-        button.classList.toggle("active", button.dataset.filterExam === examFilter);
-      });
-      renderSyllabus();
-      return;
-    }
-
-    if (target.dataset.resourceType) {
-      resourceTypeFilter = target.dataset.resourceType;
-      renderChapterDetail();
-      return;
-    }
-
-    if (target.dataset.action === "add-resource") {
-      openModal("resource", { chapterId: activeView === "chapter" ? activeChapterId : "" });
-      return;
-    }
-
-    if (target.dataset.action === "add-session") {
-      openModal("session", { date: todayISO() });
-      return;
-    }
-
-    if (target.dataset.action === "add-chapter") {
-      openModal("chapter");
-      return;
-    }
-
-    if (target.dataset.setTarget) {
-      openModal("target", { exam: target.dataset.setTarget });
-      return;
-    }
-
-    if (target.id === "menuBtn") {
-      $("sidebar").classList.toggle("open");
-      return;
-    }
-
-    if (target.id === "quickAddBtn") {
-      openModal("resource", {
-        chapterId: activeView === "chapter" ? activeChapterId : ""
-      });
-      return;
-    }
-
-    if (target.id === "closeModalBtn" || target.id === "cancelModalBtn") {
-      closeModal();
-      return;
-    }
-
-    if (target.id === "exportBtn" || target.id === "adminExportBtn" ||
-        target.id === "settingsExportBtn") {
-      exportBackup();
-      return;
-    }
-
-    if (target.id === "importBtn" || target.id === "settingsImportBtn") {
-      $("backupFileInput").click();
-      return;
-    }
-
-    if (target.id === "todayBtn") {
-      $("plannerDate").value = todayISO();
-      navigate("planner");
-      renderPlanner();
-      return;
-    }
-
-    if (target.id === "completeChapterBtn" && activeChapterId) {
-      const current = getProgress(activeChapterId);
-      const nextStatus = current.status === "Completed" ? "In progress" : "Completed";
-      setProgress(activeChapterId, {
-        status: nextStatus,
-        completedAt: nextStatus === "Completed" ? new Date().toISOString() : null
-      });
-      showToast(nextStatus === "Completed" ? "Chapter marked complete." : "Chapter moved back to in progress.");
-      return;
-    }
-
-    if (target.id === "saveNotesBtn" && activeChapterId) {
-      state.notes[activeChapterId] = $("chapterNotes").value;
-      saveState();
-      showToast("Chapter notes saved.");
-      return;
-    }
-
-    if (target.id === "logRevisionBtn" && activeChapterId) {
-      state.revisions[activeChapterId] = Number(state.revisions[activeChapterId] || 0) + 1;
-      saveState();
-      renderAll();
-      showToast("Revision recorded.");
-      return;
-    }
-
-    if (target.dataset.completeSession) {
-      const session = state.sessions.find(item => item.id === target.dataset.completeSession);
-      if (!session) return;
-      session.status = "Completed";
-
-      if (session.chapterId && getChapter(session.chapterId)) {
-        const progress = getProgress(session.chapterId);
-        state.progress[session.chapterId] = {
-          ...progress,
-          studyMinutes: Number(progress.studyMinutes || 0) + Number(session.minutes || 0),
-          status: progress.status === "Not started" ? "In progress" : progress.status
-        };
-      }
-
-      saveState();
-      renderAll();
-      showToast("Session marked completed and study time recorded.");
-      return;
-    }
-
-    if (target.dataset.deleteResource) {
-      deleteResource(target.dataset.deleteResource);
-      return;
-    }
-
-    if (target.dataset.deleteSession) {
-      deleteSession(target.dataset.deleteSession);
-      return;
-    }
-
-    if (target.dataset.deleteChapter) {
-      deleteChapter(target.dataset.deleteChapter);
-      return;
-    }
-
-    if (target.id === "resetDataBtn") {
-      const confirmed = window.confirm(
-        "Reset all saved tracker data in this browser? Export a backup first if you need it."
-      );
-      if (!confirmed) return;
-
-      state = blankState();
-      activeChapterId = null;
-      saveState();
-      renderAll();
-      navigate("dashboard");
-      showToast("Saved tracker data reset.");
-    }
-  }
-
-  // Keyboard support for chapter cards.
-  document.addEventListener("keydown", event => {
-    if ((event.key === "Enter" || event.key === " ") &&
-        event.target.matches("[data-open-chapter]:not(button)")) {
-      event.preventDefault();
-      navigate("chapter", event.target.dataset.openChapter);
-    }
-
-    if (event.key === "Escape") {
-      closeModal();
-      $("sidebar").classList.remove("open");
-    }
-  });
-
-  document.addEventListener("click", handleClick);
-
-  $("modalForm").addEventListener("submit", handleModalSubmit);
-  $("closeModalBtn").addEventListener("click", closeModal);
-  $("cancelModalBtn").addEventListener("click", closeModal);
-
-  $("modalBackdrop").addEventListener("click", event => {
-    if (event.target === $("modalBackdrop")) closeModal();
-  });
-
-  $("backupFileInput").addEventListener("change", event => {
-    importBackup(event.target.files && event.target.files[0]);
-  });
-
-  $("chapterSearch").addEventListener("input", renderSyllabus);
-  $("classFilter").addEventListener("change", renderSyllabus);
-  $("subjectFilter").addEventListener("change", renderSyllabus);
-  $("statusFilter").addEventListener("change", renderSyllabus);
-  $("resourceSearch").addEventListener("input", renderResourceLibrary);
-  $("libraryType").addEventListener("change", renderResourceLibrary);
-  $("plannerDate").addEventListener("change", renderPlanner);
-  $("plannerStatus").addEventListener("change", renderPlanner);
-
-  function createWebEffect() {
-    const canvas = $("snow");
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const pointer = { x: -1000, y: -1000, active: false };
-    const waves = [];
-    let nodes = [];
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-    let raf = 0;
-    let last = 0;
-
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      const spacing = width < 700 ? 70 : 86;
-      const cols = Math.ceil(width / spacing) + 2;
-      const rows = Math.ceil(height / spacing) + 2;
-      nodes = [];
-
-      for (let row = -1; row < rows; row++) {
-        for (let col = -1; col < cols; col++) {
-          nodes.push({
-            ox: col * spacing + Math.random() * 28,
-            oy: row * spacing + Math.random() * 28,
-            phase: Math.random() * Math.PI * 2,
-            x: 0,
-            y: 0,
-            size: 0.7 + Math.random() * 1.2
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = isComplete(item, index);
+          checkbox.addEventListener("change", () => {
+            const key = KEY_PREFIX + item.cls + "." + item.sub + "." + index;
+            if (checkbox.checked) localStorage.setItem(key, "1");
+            else localStorage.removeItem(key);
+            renderSubjects();
           });
-        }
-      }
+
+          const name = document.createElement("span");
+          name.textContent = chapter;
+
+          label.append(checkbox, name);
+          list.append(label);
+        });
+
+        toggle.addEventListener("click", () => {
+          const willOpen = list.hidden;
+          list.hidden = !willOpen;
+          toggle.setAttribute("aria-expanded", String(willOpen));
+        });
+
+        section.append(toggle, list);
+        subjects.append(section);
+      });
+
+      updateProgress();
     }
 
-    window.addEventListener("pointermove", event => {
-      pointer.x = event.clientX;
-      pointer.y = event.clientY;
-      pointer.active = true;
-    }, { passive: true });
+    function updateProgress() {
+      ["11th", "12th"].forEach(cls => {
+        const group = DB.filter(item => item.cls === cls);
+        const total = group.reduce((sum, item) => sum + item.ch.length, 0);
+        const done = group.reduce((sum, item) =>
+          sum + item.ch.reduce((n, _, index) => n + (isComplete(item, index) ? 1 : 0), 0), 0
+        );
+        const percent = total ? Math.round(done / total * 100) : 0;
+        const suffix = cls === "11th" ? "11" : "12";
+        document.getElementById("progress" + suffix).style.width = percent + "%";
+        document.getElementById("label" + suffix).textContent =
+          percent + "% completed · " + done + " of " + total + " chapters";
+      });
+    }
 
-    window.addEventListener("pointerout", event => {
-      if (!event.relatedTarget) pointer.active = false;
+    const modelButton = document.getElementById("modelButton");
+    const modelMenu = document.getElementById("modelMenu");
+
+    modelButton.addEventListener("click", () => {
+      modelMenu.hidden = !modelMenu.hidden;
+      modelButton.setAttribute("aria-expanded", String(!modelMenu.hidden));
     });
 
-    window.addEventListener("pointerdown", event => {
-      waves.push({ x: event.clientX, y: event.clientY, radius: 0, life: 1 });
-      if (waves.length > 5) waves.shift();
-    }, { passive: true });
+    document.querySelectorAll(".model-option").forEach(option => {
+      option.addEventListener("click", () => {
+        document.getElementById("selectedName").textContent = option.dataset.name;
+        document.getElementById("selectedLogo").textContent = option.dataset.logo;
+        modelMenu.hidden = true;
+        modelButton.setAttribute("aria-expanded", "false");
+        showNotice(option.dataset.name + " selected. Cloudflare Worker connection is not configured yet.");
+      });
+    });
 
-    window.addEventListener("resize", resize, { passive: true });
-
-    function draw(time) {
-      if (document.hidden) {
-        raf = 0;
-        return;
-      }
-
-      if (time - last < 28) {
-        raf = requestAnimationFrame(draw);
-        return;
-      }
-      last = time;
-
-      ctx.clearRect(0, 0, width, height);
-      const t = reduced ? 0 : time * 0.0005;
-      const reach = width < 700 ? 105 : 130;
-      const mouseReach = width < 700 ? 115 : 170;
-
-      for (const node of nodes) {
-        node.x = node.ox + Math.sin(t + node.phase) * 7;
-        node.y = node.oy + Math.cos(t + node.phase) * 7;
-
-        if (pointer.active && !reduced) {
-          const dx = node.x - pointer.x;
-          const dy = node.y - pointer.y;
-          const distance = Math.hypot(dx, dy);
-
-          if (distance > 0 && distance < mouseReach) {
-            const force = (1 - distance / mouseReach) * 12;
-            node.x += dx / distance * force;
-            node.y += dy / distance * force;
-          }
-        }
-      }
-
-      for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i];
-
-        for (let j = i + 1; j < nodes.length; j++) {
-          const b = nodes[j];
-          const distance = Math.hypot(a.x - b.x, a.y - b.y);
-          if (distance > reach) continue;
-
-          const mx = (a.x + b.x) / 2;
-          const my = (a.y + b.y) / 2;
-          const proximity = 1 - distance / reach;
-          let glow = 0;
-
-          if (pointer.active) {
-            const md = Math.hypot(mx - pointer.x, my - pointer.y);
-            if (md < mouseReach) glow = 1 - md / mouseReach;
-          }
-
-          let waveGlow = 0;
-          for (const wave of waves) {
-            const delta = Math.abs(Math.hypot(mx - wave.x, my - wave.y) - wave.radius);
-            if (delta < 26) waveGlow = Math.max(waveGlow, (1 - delta / 26) * wave.life);
-          }
-
-          const alpha = Math.min(0.75, 0.04 + proximity * 0.12 + glow * 0.45 + waveGlow * 0.55);
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = glow + waveGlow > 0.18
-            ? `rgba(90,220,255,${alpha})`
-            : `rgba(167,139,250,${alpha})`;
-          ctx.lineWidth = 0.45 + glow + waveGlow;
-          ctx.stroke();
-        }
-      }
-
-      for (const node of nodes) {
-        const distance = pointer.active
-          ? Math.hypot(node.x - pointer.x, node.y - pointer.y)
-          : Infinity;
-        const glow = distance < mouseReach ? 1 - distance / mouseReach : 0;
-
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.size + glow * 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(105,220,255,${0.18 + glow * 0.8})`;
-        ctx.shadowBlur = glow > 0.1 ? glow * 17 : 0;
-        ctx.shadowColor = "#67e8f9";
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      for (let i = waves.length - 1; i >= 0; i--) {
-        const wave = waves[i];
-        wave.radius += reduced ? 5 : 3.8;
-        wave.life -= reduced ? 0.1 : 0.018;
-
-        if (wave.life <= 0) {
-          waves.splice(i, 1);
-          continue;
-        }
-
-        ctx.beginPath();
-        ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(103,232,249,${wave.life * 0.8})`;
-        ctx.lineWidth = 1.5 + wave.life * 2;
-        ctx.shadowBlur = wave.life * 15;
-        ctx.shadowColor = "#67e8f9";
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      }
-
-      raf = requestAnimationFrame(draw);
-    }
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        if (raf) cancelAnimationFrame(raf);
-        raf = 0;
-      } else if (!raf) {
-        last = 0;
-        raf = requestAnimationFrame(draw);
+    document.addEventListener("click", event => {
+      if (!modelMenu.contains(event.target) && !modelButton.contains(event.target)) {
+        modelMenu.hidden = true;
+        modelButton.setAttribute("aria-expanded", "false");
       }
     });
 
-    resize();
-    raf = requestAnimationFrame(draw);
-  }
+    document.getElementById("chatForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const input = document.getElementById("message");
+      if (!input.value.trim()) {
+        showNotice("Pehle apna question type karo.");
+        return;
+      }
+      showNotice("AI abhi connected nahi hai. Next step mein Cloudflare Worker connect karenge.");
+    });
 
-  // If a storage issue occurs, show a warning without losing the current screen.
-  try {
-    createWebEffect();
-    renderAll();
+    document.getElementById("loginButton").addEventListener("click", () => {
+      showNotice("Google login ko secure authentication backend se connect karna baaki hai.");
+    });
 
-    // Support direct chapter links such as ?chapter=class-11-physics-kinematics.
-    const requestedChapter = new URLSearchParams(location.search).get("chapter");
-    if (requestedChapter) {
-      const match = state.chapters.find(ch =>
-        ch.id === requestedChapter || slug(ch.name) === requestedChapter
-      );
-      if (match) navigate("chapter", match.id);
+    document.getElementById("progressButton").addEventListener("click", () => {
+      document.getElementById("subjects").scrollIntoView({ behavior: "smooth" });
+    });
+
+    if (window.matchMedia("(pointer: fine)").matches &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      document.addEventListener("pointermove", event => {
+        document.documentElement.style.setProperty("--mx", event.clientX + "px");
+        document.documentElement.style.setProperty("--my", event.clientY + "px");
+      }, { passive: true });
     }
-  } catch (error) {
-    console.error("Tracker initialization error:", error);
-    showToast("Something went wrong while loading the tracker. Check the browser console.");
-  }
-})();
-</script>
+
+    renderSubjects();
+  </script>
 </body>
 </html>
